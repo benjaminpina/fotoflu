@@ -19,7 +19,7 @@ class PanelLateral extends GetView<PanelLateralController> {
               height: 300,
               child: _Selecciones(),
             ),
-            SizedBox(width: double.infinity, height: 200, child: _Acciones()),
+            SizedBox(width: double.infinity, height: 190, child: _Acciones()),
             SizedBox(width: double.infinity, height: 100, child: _Botones()),
           ],
         ),
@@ -33,7 +33,21 @@ class _Botones extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Placeholder(child: Text('Botones'));
+    return Row(
+      children: [
+        SizedBox(width: 20),
+        ElevatedButton(
+          onPressed: () {},
+          child: Row(children: [Icon(Icons.settings), Text('Opciones')]),
+        ),
+        Spacer(),
+        ElevatedButton(
+          onPressed: () {},
+          child: Row(children: [Icon(Icons.cancel), Text('Cerrar')]),
+        ),
+        SizedBox(width: 20),
+      ],
+    );
   }
 }
 
@@ -42,7 +56,43 @@ class _Acciones extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Placeholder(child: Text('Acciones'));
+    return Container(
+      padding: const EdgeInsets.all(15),
+      child: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () {},
+            child: Row(
+              children: [
+                Icon(Icons.perm_media),
+                Text('Crear estructura directorios'),
+              ],
+            ),
+          ),
+          SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () {},
+            child: Row(
+              children: [Icon(Icons.move_down), Text('Distribuir raw y jpg')],
+            ),
+          ),
+          SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () {},
+            child: Row(
+              children: [Icon(Icons.view_carousel), Text('Explorar imágenes')],
+            ),
+          ),
+          SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () {},
+            child: Row(
+              children: [Icon(Icons.raw_on), Text('Exportar raw selectos')],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
