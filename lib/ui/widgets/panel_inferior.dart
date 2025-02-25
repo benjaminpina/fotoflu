@@ -10,7 +10,31 @@ class PanelInferior extends GetView<PanelInferiorController> {
     return SizedBox(
       width: double.infinity,
       height: 50,
-      child: Placeholder(child: const Text('Panel Inferior')),
+      child: Column(children: [_ControlesNavegacion(), _BarraNavegacion()]),
+    );
+  }
+}
+
+class _ControlesNavegacion extends StatelessWidget {
+  const _ControlesNavegacion();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: Placeholder(child: const Text('Controles de Navegación')),
+    );
+  }
+}
+
+class _BarraNavegacion extends StatelessWidget {
+  const _BarraNavegacion();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: Placeholder(child: const Text('Barra Navegación')),
     );
   }
 }
