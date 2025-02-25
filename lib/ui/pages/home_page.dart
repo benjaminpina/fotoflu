@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fotoflu/controllers/home_controller.dart';
 import 'package:fotoflu/ui/widgets/galeria.dart';
 import 'package:fotoflu/ui/widgets/panel_inferior.dart';
 import 'package:fotoflu/ui/widgets/panel_lateral.dart';
+import 'package:get/state_manager.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
 
   @override
