@@ -1,7 +1,10 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class GaleriaController extends GetxController {
+  final PageController pageController = PageController();
+
   var images = <File>[].obs;
 
   @override

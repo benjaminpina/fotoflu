@@ -29,7 +29,7 @@ class Galeria extends StatelessWidget {
             },
             scrollPhysics: BouncingScrollPhysics(),
             backgroundDecoration: BoxDecoration(color: Colors.black),
-            pageController: PageController(),
+            pageController: controller.pageController,
           );
         }
       }),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fotoflu/controllers/galeria_controller.dart';
 import 'package:fotoflu/controllers/panel_inferior_controller.dart';
+import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 
 class PanelInferior extends GetView<PanelInferiorController> {
@@ -16,7 +18,8 @@ class PanelInferior extends GetView<PanelInferiorController> {
 }
 
 class _ControlesNavegacion extends StatelessWidget {
-  const _ControlesNavegacion();
+  final galeriaController = Get.find<GaleriaController>();
+  final pageController = Get.find<GaleriaController>().pageController;
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +27,28 @@ class _ControlesNavegacion extends StatelessWidget {
       width: double.infinity,
       child: Row(
         children: [
-          IconButton(icon: const Icon(Icons.arrow_back), onPressed: () {}),
-          IconButton(icon: const Icon(Icons.arrow_forward), onPressed: () {}),
+          IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              if (pageController.page! > 0) {
+                pageController.previousPage(
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
+              }
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.arrow_forward),
+            onPressed: () {
+              if (pageController.page! < galeriaController.images.length - 1) {
+                pageController.nextPage(
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
+              }
+            },
+          ),
           IconButton(icon: const Icon(Icons.check), onPressed: () {}),
           IconButton(icon: const Icon(Icons.close), onPressed: () {}),
           IconButton(icon: const Icon(Icons.delete), onPressed: () {}),
