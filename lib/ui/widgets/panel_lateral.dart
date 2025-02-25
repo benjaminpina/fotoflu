@@ -13,12 +13,8 @@ class PanelLateral extends GetView<PanelLateralController> {
       child: Placeholder(
         child: const Column(
           children: [
-            Expanded(child: _Directorio()),
-            SizedBox(
-              width: double.infinity,
-              height: 300,
-              child: _Selecciones(),
-            ),
+            SizedBox(width: double.infinity, height: 300, child: _Directorio()),
+            Expanded(child: _Selecciones()),
             SizedBox(width: double.infinity, height: 190, child: _Acciones()),
             SizedBox(width: double.infinity, height: 100, child: _Botones()),
           ],
@@ -101,7 +97,10 @@ class _Selecciones extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Placeholder(child: Text('Selecciones'));
+    return SizedBox(
+      width: double.infinity,
+      child: Placeholder(child: Text('Selecciones')),
+    );
   }
 }
 
