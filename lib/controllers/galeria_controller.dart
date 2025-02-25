@@ -7,6 +7,7 @@ class GaleriaController extends GetxController {
 
   var images = <File>[].obs;
   var currentPage = 0.0.obs;
+  var errorMessage = ''.obs;
 
   @override
   void onInit() {
@@ -18,12 +19,23 @@ class GaleriaController extends GetxController {
   }
 
   void loadImages() async {
-    final imageDir = Directory(
-      '/home/benjamin/Imágenes/ninfas/Seleccion/achicadas',
-    );
-    if (await imageDir.exists()) {
-      final imageFiles = imageDir.listSync().whereType<File>().toList();
-      images.addAll(imageFiles);
+    try {
+      final imageDir = Directory(
+        // '/home/benjamin/Imágenes/ninfas/Seleccion/achicadas',
+        '/home/benjamin/Documentos/Llaves',
+      );
+      if (await imageDir.exists()) {
+        final imageFiles = imageDir.listSync().whereType<File>().toList();
+        if (imageFiles.isEmpty) {
+          errorMessage.value = 'No se encontraron imágenes en el directorio.';
+        } else {
+          images.addAll(imageFiles);
+        }
+      } else {
+        errorMessage.value = 'El directorio no existe.';
+      }
+    } catch (e) {
+      errorMessage.value = 'Error al cargar las imágenes: $e';
     }
   }
 

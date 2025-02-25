@@ -15,8 +15,8 @@ class Galeria extends StatelessWidget {
       width: double.infinity,
       height: double.infinity,
       child: Obx(() {
-        if (controller.images.isEmpty) {
-          return Center(child: Text('No hay imágenes disponibles.'));
+        if (controller.errorMessage.isNotEmpty) {
+          return Center(child: Text(controller.errorMessage.value));
         } else {
           return PhotoViewGallery.builder(
             itemCount: controller.images.length,
