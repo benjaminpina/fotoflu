@@ -111,7 +111,7 @@ class _Selecciones extends StatelessWidget {
                   SizedBox(
                     width: 215,
                     height: double.infinity,
-                    child: Placeholder(child: Text('Listado')),
+                    child: DataTableExample(),
                   ),
                   SizedBox(width: 10),
                   SizedBox(
@@ -171,6 +171,56 @@ class _Directorio extends StatelessWidget {
           }
         },
         child: Row(children: [Icon(Icons.folder), Text('Directorio')]),
+      ),
+    );
+  }
+}
+
+class DataTableExample extends StatefulWidget {
+  const DataTableExample({super.key});
+
+  @override
+  State<DataTableExample> createState() => _DataTableExampleState();
+}
+
+class _DataTableExampleState extends State<DataTableExample> {
+  static const int numItems = 20;
+  int? selectedRowIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: DataTable(
+        columns: const <DataColumn>[DataColumn(label: Text('Cambios'))],
+        rows: List<DataRow>.generate(
+          numItems,
+          (int index) => DataRow(
+            color: WidgetStateProperty.resolveWith<Color?>((
+              Set<WidgetState> states,
+            ) {
+              if (states.contains(WidgetState.selected)) {
+                return Theme.of(
+                  context,
+                ).colorScheme.primary.withValues(alpha: 0.08);
+              }
+              if (index.isEven) {
+                return Colors.grey.withValues(alpha: 0.3);
+              }
+              return null; // Use default value for other states and odd rows.
+            }),
+            cells: <DataCell>[DataCell(Text('Row $index'))],
+            selected: selectedRowIndex == index,
+            onSelectChanged: (bool? value) {
+              setState(() {
+                if (value == true) {
+                  selectedRowIndex = index;
+                } else {
+                  selectedRowIndex = null;
+                }
+              });
+            },
+          ),
+        ),
       ),
     );
   }
