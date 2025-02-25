@@ -11,7 +11,17 @@ class HomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('FotoFlu')),
+      appBar: AppBar(
+        title: Obx(
+          () => Row(
+            children: [
+              const Text('FotoFlu'),
+              SizedBox(width: 20),
+              Text(controller.directorio.value, style: TextStyle(fontSize: 14)),
+            ],
+          ),
+        ),
+      ),
       body: Row(
         children: [
           Expanded(

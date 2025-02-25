@@ -12,15 +12,13 @@ class PanelLateral extends GetView<PanelLateralController> {
     return SizedBox(
       width: double.infinity,
       height: double.infinity,
-      child: Placeholder(
-        child: Column(
-          children: [
-            SizedBox(width: double.infinity, height: 80, child: _Directorio()),
-            Expanded(child: _Selecciones()),
-            SizedBox(width: double.infinity, height: 190, child: _Acciones()),
-            SizedBox(width: double.infinity, height: 100, child: _Botones()),
-          ],
-        ),
+      child: Column(
+        children: [
+          SizedBox(width: double.infinity, height: 80, child: _Directorio()),
+          Expanded(child: _Selecciones()),
+          SizedBox(width: double.infinity, height: 190, child: _Acciones()),
+          SizedBox(width: double.infinity, height: 100, child: _Botones()),
+        ],
       ),
     );
   }
