@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:fotoflu/services/application.dart';
 import 'package:get/get.dart';
 import 'package:fotoflu/controllers/galeria_controller.dart';
 import 'package:fotoflu/controllers/panel_lateral_controller.dart';
@@ -38,7 +39,9 @@ class _Botones extends StatelessWidget {
         ),
         Spacer(),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            exitApp();
+          },
           child: Row(children: [Icon(Icons.cancel), Text('Cerrar')]),
         ),
         SizedBox(width: 20),
