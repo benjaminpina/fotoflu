@@ -9,7 +9,7 @@ class PanelInferior extends GetView<PanelInferiorController> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 50,
+      height: 100,
       child: Column(children: [_ControlesNavegacion(), _BarraNavegacion()]),
     );
   }
@@ -22,7 +22,21 @@ class _ControlesNavegacion extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: Placeholder(child: const Text('Controles de Navegación')),
+      child: Row(
+        children: [
+          IconButton(icon: const Icon(Icons.arrow_back), onPressed: () {}),
+          IconButton(icon: const Icon(Icons.arrow_forward), onPressed: () {}),
+          IconButton(icon: const Icon(Icons.check), onPressed: () {}),
+          IconButton(icon: const Icon(Icons.close), onPressed: () {}),
+          IconButton(icon: const Icon(Icons.delete), onPressed: () {}),
+          SizedBox(width: 20),
+          IconButton(icon: const Icon(Icons.rotate_left), onPressed: () {}),
+          IconButton(icon: const Icon(Icons.rotate_right), onPressed: () {}),
+          SizedBox(width: 20),
+          IconButton(icon: const Icon(Icons.zoom_in), onPressed: () {}),
+          IconButton(icon: const Icon(Icons.zoom_out), onPressed: () {}),
+        ],
+      ),
     );
   }
 }
@@ -34,7 +48,7 @@ class _BarraNavegacion extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: Placeholder(child: const Text('Barra Navegación')),
+      child: Slider(value: 20, max: 100, onChanged: (double value) {}),
     );
   }
 }

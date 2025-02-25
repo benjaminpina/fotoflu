@@ -18,7 +18,7 @@ class HomePage extends GetView<HomeController> {
             child: Column(
               children: [
                 Expanded(child: Galeria()),
-                SizedBox(height: 50, child: PanelInferior()),
+                SizedBox(height: 100, child: PanelInferior()),
               ],
             ),
           ),
