@@ -6,6 +6,7 @@ class GaleriaController extends GetxController {
   final PageController pageController = PageController();
 
   var images = <File>[].obs;
+  var dir = ''.obs;
   var currentPage = 0.0.obs;
   var errorMessage = ''.obs;
 

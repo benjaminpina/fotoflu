@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fotoflu/controllers/galeria_controller.dart';
 import 'package:fotoflu/controllers/panel_inferior_controller.dart';
 import 'package:get/get.dart';
-import 'package:get/state_manager.dart';
 
 class PanelInferior extends GetView<PanelInferiorController> {
   const PanelInferior({super.key});
