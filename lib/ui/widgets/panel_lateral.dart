@@ -196,11 +196,10 @@ class _Directorio extends StatelessWidget {
       padding: const EdgeInsets.all(15),
       child: ElevatedButton(
         onPressed: () async {
-          String? selectedDirectory =
-              await FilePicker.platform.getDirectoryPath();
+          String? selectedDirectory = await FilePicker.platform
+              .getDirectoryPath(initialDirectory: controller.dir.value);
           if (selectedDirectory != null) {
-            controller.dir.value = selectedDirectory;
-            controller.loadImages();
+            controller.setDir(selectedDirectory);
           }
         },
         child: Row(children: [Icon(Icons.folder), Text('Directorio')]),

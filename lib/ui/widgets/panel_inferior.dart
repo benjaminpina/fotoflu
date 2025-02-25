@@ -81,8 +81,11 @@ class _BarraNavegacion extends StatelessWidget {
           } else {
             return Obx(
               () => Slider(
+                max:
+                    galeriaController.maxImages > 0
+                        ? galeriaController.maxImages.value.toDouble() - 1
+                        : 0,
                 value: galeriaController.currentPage.value,
-                max: galeriaController.images.length.toDouble() - 1,
                 onChanged: (double value) {
                   pageController.jumpToPage(value.toInt());
                 },

@@ -15,4 +15,9 @@ class StorageController extends GetxController {
   String get dir => storage.read('dir') ?? '';
 
   set dir(String value) => storage.write('dir', value);
+
+  Future<void> resetDir() async {
+    final appDocumentsDir = await getApplicationDocumentsDirectory();
+    storage.write('dir', appDocumentsDir.path);
+  }
 }

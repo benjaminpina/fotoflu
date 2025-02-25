@@ -8,6 +8,7 @@ class GaleriaController extends GetxController {
   final PageController pageController = PageController();
 
   var images = <File>[].obs;
+  var maxImages = 0.obs;
   var dir = ''.obs;
   var currentPage = 0.0.obs;
   var errorMessage = ''.obs;
@@ -19,11 +20,12 @@ class GaleriaController extends GetxController {
       currentPage.value = pageController.page ?? 0;
     });
     dir.value = storage.dir;
-    loadImages();
+    _loadImages();
   }
 
-  void loadImages() async {
+  void _loadImages() async {
     images.clear();
+    currentPage.value = 0;
     try {
       final imageDir = Directory(dir.value);
       if (await imageDir.exists()) {
@@ -46,20 +48,30 @@ class GaleriaController extends GetxController {
         if (filteredImages.isEmpty) {
           errorMessage.value = 'No se encontraron imágenes en el directorio.';
         } else {
+          filteredImages.sort((a, b) => a.path.compareTo(b.path));
           images.addAll(filteredImages);
+          maxImages.value = images.length;
         }
       } else {
         errorMessage.value = 'El directorio no existe.';
+        await storage.resetDir();
+        dir.value = storage.dir;
+        maxImages.value = 0;
       }
     } catch (e) {
       errorMessage.value = 'Error al cargar las imágenes: $e';
     }
   }
 
+  void setDir(String value) {
+    dir.value = value;
+    storage.dir = value;
+    _loadImages();
+  }
+
   @override
   void onClose() {
     pageController.dispose();
-    storage.dir = dir.value;
     super.onClose();
   }
 }
