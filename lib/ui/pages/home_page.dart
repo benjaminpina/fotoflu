@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fotoflu/controllers/home_controller.dart';
-import 'package:get/get.dart';
+import 'package:fotoflu/ui/widgets/galeria.dart';
+import 'package:fotoflu/ui/widgets/panel_inferior.dart';
+import 'package:fotoflu/ui/widgets/panel_lateral.dart';
 
-class HomePage extends GetView<HomeController> {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
@@ -14,21 +15,12 @@ class HomePage extends GetView<HomeController> {
           Expanded(
             child: Column(
               children: [
-                Expanded(child: Placeholder(child: const Text('Galería'))),
-                SizedBox(
-                  height: 50,
-                  child: Placeholder(
-                    child: const Text('Controles navegación selección'),
-                  ),
-                ),
+                Expanded(child: Galeria()),
+                SizedBox(height: 50, child: PanelInferior()),
               ],
             ),
           ),
-          SizedBox(
-            width: 300,
-            height: double.infinity,
-            child: Placeholder(child: const Text('Controles de flujo')),
-          ),
+          SizedBox(width: 300, height: double.infinity, child: PanelLateral()),
         ],
       ),
     );
