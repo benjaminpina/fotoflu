@@ -39,9 +39,28 @@ class _Botones extends StatelessWidget {
         ),
         Spacer(),
         ElevatedButton(
-          onPressed: () {
-            exitApp();
-          },
+          onPressed:
+              () => showDialog<String>(
+                context: context,
+                builder:
+                    (BuildContext context) => AlertDialog(
+                      title: const Text('FotoFlu'),
+                      content: const Text('¿Desea cerrar la aplicación?'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('Cancelar'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            exitApp();
+                          },
+                          child: const Text('Sí'),
+                        ),
+                      ],
+                    ),
+              ),
           child: Row(children: [Icon(Icons.cancel), Text('Cerrar')]),
         ),
         SizedBox(width: 20),
