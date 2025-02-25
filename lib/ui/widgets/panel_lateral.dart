@@ -1,4 +1,6 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:fotoflu/controllers/home_controller.dart';
 import 'package:fotoflu/controllers/panel_lateral_controller.dart';
 import 'package:get/get.dart';
 
@@ -11,9 +13,9 @@ class PanelLateral extends GetView<PanelLateralController> {
       width: double.infinity,
       height: double.infinity,
       child: Placeholder(
-        child: const Column(
+        child: Column(
           children: [
-            SizedBox(width: double.infinity, height: 300, child: _Directorio()),
+            SizedBox(width: double.infinity, height: 80, child: _Directorio()),
             Expanded(child: _Selecciones()),
             SizedBox(width: double.infinity, height: 190, child: _Acciones()),
             SizedBox(width: double.infinity, height: 100, child: _Botones()),
@@ -105,13 +107,25 @@ class _Selecciones extends StatelessWidget {
 }
 
 class _Directorio extends StatelessWidget {
-  const _Directorio();
+  _Directorio();
+
+  final controller = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       width: double.infinity,
-      child: Placeholder(child: Text('Directorio')),
+      padding: const EdgeInsets.all(15),
+      child: ElevatedButton(
+        onPressed: () async {
+          String? selectedDirectory =
+              await FilePicker.platform.getDirectoryPath();
+          if (selectedDirectory != null) {
+            controller.directorio.value = selectedDirectory;
+          }
+        },
+        child: Row(children: [Icon(Icons.folder), Text('Directorio')]),
+      ),
     );
   }
 }
