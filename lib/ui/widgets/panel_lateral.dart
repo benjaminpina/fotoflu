@@ -97,9 +97,57 @@ class _Selecciones extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       width: double.infinity,
-      child: Placeholder(child: Text('Selecciones')),
+      padding: const EdgeInsets.all(15),
+      child: Column(
+        children: [
+          Expanded(
+            child: SizedBox(
+              width: double.infinity,
+              height: double.infinity,
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 215,
+                    height: double.infinity,
+                    child: Placeholder(child: Text('Listado')),
+                  ),
+                  SizedBox(width: 10),
+                  SizedBox(
+                    width: 40,
+                    height: double.infinity,
+                    child: Column(
+                      children: [
+                        IconButton(onPressed: () {}, icon: Icon(Icons.add)),
+                        IconButton(onPressed: () {}, icon: Icon(Icons.remove)),
+                        Spacer(),
+                        IconButton(
+                          onPressed: () {},
+                          icon: Icon(Icons.filter_alt),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: 10),
+          SizedBox(
+            width: double.infinity,
+            height: 60,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(children: [Text('Cambios:'), Text('0')]),
+                Column(children: [Text('Seleccionadas:'), Text('0')]),
+                Column(children: [Text('Para borrar:'), Text('0')]),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
