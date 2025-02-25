@@ -10,7 +10,7 @@ class PanelInferior extends GetView<PanelInferiorController> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 100,
+      height: 120,
       child: Column(children: [_ControlesNavegacion(), _BarraNavegacion()]),
     );
   }
@@ -57,6 +57,14 @@ class _ControlesNavegacion extends StatelessWidget {
           SizedBox(width: 20),
           IconButton(icon: const Icon(Icons.zoom_in), onPressed: () {}),
           IconButton(icon: const Icon(Icons.zoom_out), onPressed: () {}),
+          SizedBox(width: 20),
+          Obx(
+            () => Text(
+              (galeriaController.currentPage.value + 1).toInt().toString(),
+            ),
+          ),
+          Text(' de '),
+          Obx(() => Text(galeriaController.maxImages.value.toString())),
         ],
       ),
     );
