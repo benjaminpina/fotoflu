@@ -1,8 +1,8 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:fotoflu/controllers/home_controller.dart';
-import 'package:fotoflu/controllers/panel_lateral_controller.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
+import 'package:fotoflu/controllers/galeria_controller.dart';
+import 'package:fotoflu/controllers/panel_lateral_controller.dart';
 
 class PanelLateral extends GetView<PanelLateralController> {
   const PanelLateral({super.key});
@@ -165,7 +165,7 @@ class _Selecciones extends StatelessWidget {
 class _Directorio extends StatelessWidget {
   _Directorio();
 
-  final controller = Get.find<HomeController>();
+  final controller = Get.find<GaleriaController>();
 
   @override
   Widget build(BuildContext context) {
@@ -177,7 +177,8 @@ class _Directorio extends StatelessWidget {
           String? selectedDirectory =
               await FilePicker.platform.getDirectoryPath();
           if (selectedDirectory != null) {
-            controller.directorio.value = selectedDirectory;
+            controller.dir.value = selectedDirectory;
+            controller.loadImages();
           }
         },
         child: Row(children: [Icon(Icons.folder), Text('Directorio')]),

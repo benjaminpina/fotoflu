@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:fotoflu/controllers/galeria_controller.dart';
 import 'package:fotoflu/controllers/home_controller.dart';
 import 'package:fotoflu/ui/widgets/galeria.dart';
 import 'package:fotoflu/ui/widgets/panel_inferior.dart';
 import 'package:fotoflu/ui/widgets/panel_lateral.dart';
-import 'package:get/state_manager.dart';
+import 'package:get/get.dart';
 
 class HomePage extends GetView<HomeController> {
-  const HomePage({super.key});
+  HomePage({super.key});
+
+  final galeriaController = Get.find<GaleriaController>();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,7 @@ class HomePage extends GetView<HomeController> {
             children: [
               const Text('FotoFlu'),
               SizedBox(width: 20),
-              Text(controller.directorio.value, style: TextStyle(fontSize: 14)),
+              Text(galeriaController.dir.value, style: TextStyle(fontSize: 14)),
             ],
           ),
         ),

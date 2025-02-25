@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:fotoflu/controllers/storage_controller.dart';
 import 'package:get/get.dart';
 
 class GaleriaController extends GetxController {
+  final storage = Get.find<StorageController>();
   final PageController pageController = PageController();
 
   var images = <File>[].obs;
@@ -16,21 +18,35 @@ class GaleriaController extends GetxController {
     pageController.addListener(() {
       currentPage.value = pageController.page ?? 0;
     });
+    dir.value = storage.dir;
     loadImages();
   }
 
   void loadImages() async {
+    images.clear();
     try {
-      final imageDir = Directory(
-        // '/home/benjamin/Imágenes/ninfas/Seleccion/achicadas',
-        '/home/benjamin/Documentos/Llaves',
-      );
+      final imageDir = Directory(dir.value);
       if (await imageDir.exists()) {
         final imageFiles = imageDir.listSync().whereType<File>().toList();
-        if (imageFiles.isEmpty) {
+        final imageExtensions = [
+          '.jpg',
+          '.jpeg',
+          '.png',
+          '.gif',
+          '.bmp',
+          '.webp',
+        ];
+
+        final filteredImages =
+            imageFiles.where((file) {
+              final extension = file.path.split('.').last.toLowerCase();
+              return imageExtensions.contains('.$extension');
+            }).toList();
+
+        if (filteredImages.isEmpty) {
           errorMessage.value = 'No se encontraron imágenes en el directorio.';
         } else {
-          images.addAll(imageFiles);
+          images.addAll(filteredImages);
         }
       } else {
         errorMessage.value = 'El directorio no existe.';
@@ -43,6 +59,7 @@ class GaleriaController extends GetxController {
   @override
   void onClose() {
     pageController.dispose();
+    storage.dir = dir.value;
     super.onClose();
   }
 }
