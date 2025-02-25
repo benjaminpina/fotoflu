@@ -6,10 +6,14 @@ class GaleriaController extends GetxController {
   final PageController pageController = PageController();
 
   var images = <File>[].obs;
+  var currentPage = 0.0.obs;
 
   @override
   void onInit() {
     super.onInit();
+    pageController.addListener(() {
+      currentPage.value = pageController.page ?? 0;
+    });
     loadImages();
   }
 
@@ -21,5 +25,11 @@ class GaleriaController extends GetxController {
       final imageFiles = imageDir.listSync().whereType<File>().toList();
       images.addAll(imageFiles);
     }
+  }
+
+  @override
+  void onClose() {
+    pageController.dispose();
+    super.onClose();
   }
 }

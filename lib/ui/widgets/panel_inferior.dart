@@ -65,13 +65,33 @@ class _ControlesNavegacion extends StatelessWidget {
 }
 
 class _BarraNavegacion extends StatelessWidget {
-  const _BarraNavegacion();
+  final galeriaController = Get.find<GaleriaController>();
+  final pageController = Get.find<GaleriaController>().pageController;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: Slider(value: 20, max: 100, onChanged: (double value) {}),
+      child: FutureBuilder(
+        future: Future.delayed(
+          Duration(milliseconds: 100),
+        ), // Espera breve para asegurar que el PageView esté construido
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else {
+            return Obx(
+              () => Slider(
+                value: galeriaController.currentPage.value,
+                max: galeriaController.images.length.toDouble() - 1,
+                onChanged: (double value) {
+                  pageController.jumpToPage(value.toInt());
+                },
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }
