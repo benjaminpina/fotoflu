@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:path/path.dart' as p;
 import 'package:fotoflu/controllers/galeria_controller.dart';
 import 'package:fotoflu/controllers/panel_inferior_controller.dart';
-import 'package:get/get.dart';
 
 class PanelInferior extends GetView<PanelInferiorController> {
   const PanelInferior({super.key});
@@ -65,6 +66,18 @@ class _ControlesNavegacion extends StatelessWidget {
           ),
           Text(' de '),
           Obx(() => Text(galeriaController.maxImages.value.toString())),
+          SizedBox(width: 20),
+          Obx(
+            () => Text(
+              galeriaController.images.isNotEmpty
+                  ? p.basename(
+                    galeriaController
+                        .images[galeriaController.currentPage.toInt()]
+                        .path,
+                  )
+                  : '',
+            ),
+          ),
         ],
       ),
     );
