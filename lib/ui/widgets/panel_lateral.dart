@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:fotoflu/routes/app_routes.dart';
 import 'package:fotoflu/services/application.dart';
 import 'package:get/get.dart';
 import 'package:fotoflu/controllers/galeria_controller.dart';
@@ -34,7 +35,7 @@ class _Botones extends StatelessWidget {
       children: [
         SizedBox(width: 20),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () => Get.toNamed(AppRoutes.opciones),
           child: Row(children: [Icon(Icons.settings), Text('Opciones')]),
         ),
         Spacer(),
