@@ -13,8 +13,28 @@ class StorageController extends GetxController {
   }
 
   String get dir => storage.read('dir') ?? '';
+  String get extRaw => storage.read('extRaw') ?? 'cr2';
+  String get destJpg => storage.read('destJpg') ?? 'jpg';
+  String get destRaw => storage.read('destRaw') ?? 'raw';
+  String get destSelect => storage.read('destSelect') ?? 'selectas';
+  List<String> get dirs =>
+      storage.read('dirs') ??
+      [
+        'raw',
+        'jpg',
+        'selectas',
+        'procesadas',
+        'retocadas',
+        'selladas',
+        'achicadas',
+      ];
 
   set dir(String value) => storage.write('dir', value);
+  set extRaw(String value) => storage.write('extRaw', value);
+  set destJpg(String value) => storage.write('destJpg', value);
+  set destRaw(String value) => storage.write('destRaw', value);
+  set destSelect(String value) => storage.write('destSelect', value);
+  set dirs(List<String> value) => storage.write('dirs', value);
 
   Future<void> resetDir() async {
     final appDocumentsDir = await getApplicationDocumentsDirectory();

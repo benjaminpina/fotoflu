@@ -70,7 +70,7 @@ class _ControlesNavegacion extends StatelessWidget {
               (galeriaController.currentPage.value + 1).toInt().toString(),
             ),
           ),
-          Text(' de '),
+          Text('/'),
           Obx(() => Text(galeriaController.maxImages.value.toString())),
           SizedBox(width: 20),
           Obx(
