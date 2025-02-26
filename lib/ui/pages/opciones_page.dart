@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fotoflu/controllers/storage_controller.dart';
+import 'package:get/get.dart';
 
 class OpcionesPage extends StatelessWidget {
   const OpcionesPage({super.key});
@@ -7,18 +9,113 @@ class OpcionesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('FotoFlu - Opciones')),
-      body: Center(
-        child: Column(
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _Directorios(),
+          Container(
+            padding: EdgeInsets.all(10),
+            color: Colors.blue,
+            child: Text('Destinos'),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
           children: [
+            Spacer(),
             ElevatedButton(
-              onPressed: () {},
-              child: Row(children: [Icon(Icons.settings), Text('Opciones')]),
+              onPressed: () => Get.back(),
+              child: Row(children: [Icon(Icons.arrow_back), Text('Regresar')]),
             ),
+            SizedBox(width: 20),
             ElevatedButton(
-              onPressed: () {},
-              child: Row(children: [Icon(Icons.settings), Text('Opciones')]),
+              onPressed: () {
+                Get.back();
+              },
+              child: Row(children: [Icon(Icons.check), Text('Aceptar')]),
             ),
+            SizedBox(width: 20),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Directorios extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(10),
+      height: double.infinity,
+      child: Column(
+        children: [
+          SizedBox(
+            height: 100,
+            child: Center(child: Text('Estructura de Directorios')),
+          ),
+          Expanded(child: SizedBox(child: DataTableDirs())),
+          SizedBox(
+            height: 80,
+            child: Row(
+              children: [
+                IconButton(onPressed: () {}, icon: Icon(Icons.remove)),
+                IconButton(onPressed: () {}, icon: Icon(Icons.add)),
+                IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class DataTableDirs extends StatefulWidget {
+  const DataTableDirs({super.key});
+
+  @override
+  State<DataTableDirs> createState() => _DataTableDirsState();
+}
+
+class _DataTableDirsState extends State<DataTableDirs> {
+  List<String> dirs = Get.find<StorageController>().dirs;
+  int? selectedRowIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: DataTable(
+        columns: const <DataColumn>[DataColumn(label: Text('Directorios'))],
+        rows: List<DataRow>.generate(
+          dirs.length,
+          (int index) => DataRow(
+            color: WidgetStateProperty.resolveWith<Color?>((
+              Set<WidgetState> states,
+            ) {
+              if (states.contains(WidgetState.selected)) {
+                return Theme.of(
+                  context,
+                ).colorScheme.primary.withValues(alpha: 0.08);
+              }
+              if (index.isEven) {
+                return Colors.grey.withValues(alpha: 0.3);
+              }
+              return null; // Use default value for other states and odd rows.
+            }),
+            cells: <DataCell>[DataCell(Text(dirs[index]))],
+            selected: selectedRowIndex == index,
+            onSelectChanged: (bool? value) {
+              setState(() {
+                if (value == true) {
+                  selectedRowIndex = index;
+                } else {
+                  selectedRowIndex = null;
+                }
+              });
+            },
+          ),
         ),
       ),
     );
