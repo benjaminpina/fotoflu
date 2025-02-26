@@ -53,11 +53,17 @@ class _ControlesNavegacion extends StatelessWidget {
           IconButton(icon: const Icon(Icons.close), onPressed: () {}),
           IconButton(icon: const Icon(Icons.delete), onPressed: () {}),
           SizedBox(width: 20),
-          IconButton(icon: const Icon(Icons.rotate_left), onPressed: () {}),
-          IconButton(icon: const Icon(Icons.rotate_right), onPressed: () {}),
-          SizedBox(width: 20),
-          IconButton(icon: const Icon(Icons.zoom_in), onPressed: () {}),
-          IconButton(icon: const Icon(Icons.zoom_out), onPressed: () {}),
+          SizedBox(
+            height: 30,
+            width: 200,
+            child: TextField(
+              readOnly: true,
+              decoration: InputDecoration(
+                labelText: 'Cambio',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ),
           SizedBox(width: 20),
           Obx(
             () => Text(
