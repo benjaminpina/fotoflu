@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:fotoflu/controllers/opciones_controller.dart';
 import 'package:prompt_dialog/prompt_dialog.dart';
-import 'package:fotoflu/controllers/storage_controller.dart';
 
 class OpcionesPage extends GetView<OpcionesController> {
   const OpcionesPage({super.key});
@@ -61,7 +60,9 @@ class _Directorios extends StatelessWidget {
             height: 100,
             child: Center(child: Text('Estructura de Directorios')),
           ),
-          Expanded(child: SizedBox(child: DataTableDirs())),
+          Expanded(
+            child: SizedBox(child: DataTableDirs(controller: controller)),
+          ),
           SizedBox(
             height: 80,
             child: Row(
@@ -83,49 +84,43 @@ class _Directorios extends StatelessWidget {
   }
 }
 
-class DataTableDirs extends StatefulWidget {
-  const DataTableDirs({super.key});
+class DataTableDirs extends StatelessWidget {
+  final OpcionesController controller;
 
-  @override
-  State<DataTableDirs> createState() => _DataTableDirsState();
-}
-
-class _DataTableDirsState extends State<DataTableDirs> {
-  List<String> dirs = Get.find<StorageController>().dirs;
-  int? selectedRowIndex;
+  const DataTableDirs({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: DataTable(
-        columns: const <DataColumn>[DataColumn(label: Text('Directorios'))],
-        rows: List<DataRow>.generate(
-          dirs.length,
-          (int index) => DataRow(
-            color: WidgetStateProperty.resolveWith<Color?>((
-              Set<WidgetState> states,
-            ) {
-              if (states.contains(WidgetState.selected)) {
-                return Theme.of(
-                  context,
-                ).colorScheme.primary.withValues(alpha: 0.08);
-              }
-              if (index.isEven) {
-                return Colors.grey.withValues(alpha: 0.3);
-              }
-              return null; // Use default value for other states and odd rows.
-            }),
-            cells: <DataCell>[DataCell(Text(dirs[index]))],
-            selected: selectedRowIndex == index,
-            onSelectChanged: (bool? value) {
-              setState(() {
-                if (value == true) {
-                  selectedRowIndex = index;
-                } else {
-                  selectedRowIndex = null;
+      child: Obx(
+        () => DataTable(
+          columns: const <DataColumn>[DataColumn(label: Text('Directorios'))],
+          rows: List<DataRow>.generate(
+            controller.dirs.length,
+            (int index) => DataRow(
+              color: WidgetStateProperty.resolveWith<Color?>((
+                Set<WidgetState> states,
+              ) {
+                if (states.contains(WidgetState.selected)) {
+                  return Theme.of(
+                    context,
+                  ).colorScheme.primary.withValues(alpha: 0.08);
                 }
-              });
-            },
+                if (index.isEven) {
+                  return Colors.grey.withValues(alpha: 0.3);
+                }
+                return null; // Use default value for other states and odd rows.
+              }),
+              cells: <DataCell>[DataCell(Text(controller.dirs[index]))],
+              selected: controller.selectedRow.value == index,
+              onSelectChanged: (bool? value) {
+                if (value == true) {
+                  controller.selectedRow.value = index;
+                } else {
+                  controller.selectedRow.value = null;
+                }
+              },
+            ),
           ),
         ),
       ),
