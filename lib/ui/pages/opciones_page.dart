@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fotoflu/controllers/storage_controller.dart';
 import 'package:get/get.dart';
+import 'package:prompt_dialog/prompt_dialog.dart';
+import 'package:fotoflu/controllers/storage_controller.dart';
 
 class OpcionesPage extends StatelessWidget {
   const OpcionesPage({super.key});
@@ -61,7 +62,12 @@ class _Directorios extends StatelessWidget {
             child: Row(
               children: [
                 IconButton(onPressed: () {}, icon: Icon(Icons.remove)),
-                IconButton(onPressed: () {}, icon: Icon(Icons.add)),
+                IconButton(
+                  onPressed: () async {
+                    await prompt(context);
+                  },
+                  icon: Icon(Icons.add),
+                ),
                 IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
               ],
             ),
