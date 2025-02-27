@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:fotoflu/controllers/opciones_controller.dart';
 import 'package:prompt_dialog/prompt_dialog.dart';
 import 'package:fotoflu/controllers/storage_controller.dart';
 
-class OpcionesPage extends StatelessWidget {
+class OpcionesPage extends GetView<OpcionesController> {
   const OpcionesPage({super.key});
 
   @override
@@ -13,7 +14,7 @@ class OpcionesPage extends StatelessWidget {
       body: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _Directorios(),
+          _Directorios(controller: controller),
           Container(
             padding: EdgeInsets.all(10),
             color: Colors.blue,
@@ -45,6 +46,10 @@ class OpcionesPage extends StatelessWidget {
 }
 
 class _Directorios extends StatelessWidget {
+  const _Directorios({required this.controller});
+
+  final OpcionesController controller;
+
   @override
   Widget build(BuildContext context) {
     return Container(
