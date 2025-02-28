@@ -41,6 +41,7 @@ dependencies:
   photo_view: ^0.15.0
   path: ^1.9.1
   prompt_dialog: ^1.0.17
+  confirm_dialog: ^1.0.4
 
 dev_dependencies:
   flutter_test:
