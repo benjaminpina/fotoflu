@@ -10,7 +10,7 @@ class OpcionesController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    dirs.value = storage.dirs;
+    //TODO: obtener desde Isa dirs.value = storage.dirs;
     selectedRow.value = null;
   }
 
@@ -32,6 +32,6 @@ class OpcionesController extends GetxController {
   }
 
   void updateDirs() {
-    storage.dirs = dirs.toList();
+    // TODO: guardar en Isar storage.dirs = dirs.toList();
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:fotoflu/controllers/opciones_controller.dart';
 import 'package:prompt_dialog/prompt_dialog.dart';
+import 'package:confirm_dialog/confirm_dialog.dart';
 
 class OpcionesPage extends GetView<OpcionesController> {
   const OpcionesPage({super.key});
@@ -66,7 +67,25 @@ class _Directorios extends StatelessWidget {
             height: 80,
             child: Row(
               children: [
-                IconButton(onPressed: () {}, icon: Icon(Icons.remove)),
+                IconButton(
+                  onPressed:
+                      controller.selectedRow.value != null
+                          ? () async {
+                            if (await confirm(
+                              context,
+                              title: Text('Eliminar Directorio'),
+                              content: Text(
+                                '¿Está seguro de eliminar el directorio seleccionado?',
+                              ),
+                            )) {
+                              controller.removeDir(
+                                controller.selectedRow.value!,
+                              );
+                            }
+                          }
+                          : null,
+                  icon: Icon(Icons.remove),
+                ),
                 IconButton(
                   onPressed: () async {
                     controller.addDir(
