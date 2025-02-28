@@ -14,7 +14,10 @@ class OpcionesController extends GetxController {
     selectedRow.value = null;
   }
 
-  void addDir(String dir) {
+  void addDir(String? dir) {
+    if (dir == null || dir.isEmpty) {
+      return;
+    }
     if (!dirs.contains(dir)) {
       dirs.add(dir);
     }
@@ -28,9 +31,7 @@ class OpcionesController extends GetxController {
     dirs[index] = dir;
   }
 
-  @override
-  void onClose() {
-    storage.dirs.assignAll(dirs);
-    super.onClose();
+  void updateDirs() {
+    storage.dirs = dirs.toList();
   }
 }

@@ -32,6 +32,7 @@ class OpcionesPage extends GetView<OpcionesController> {
             SizedBox(width: 20),
             ElevatedButton(
               onPressed: () {
+                controller.updateDirs();
                 Get.back();
               },
               child: Row(children: [Icon(Icons.check), Text('Aceptar')]),
@@ -60,9 +61,7 @@ class _Directorios extends StatelessWidget {
             height: 100,
             child: Center(child: Text('Estructura de Directorios')),
           ),
-          Expanded(
-            child: SizedBox(child: DataTableDirs(controller: controller)),
-          ),
+          Expanded(child: SizedBox(child: DataTableDirs(controller))),
           SizedBox(
             height: 80,
             child: Row(
@@ -70,7 +69,16 @@ class _Directorios extends StatelessWidget {
                 IconButton(onPressed: () {}, icon: Icon(Icons.remove)),
                 IconButton(
                   onPressed: () async {
-                    await prompt(context);
+                    controller.addDir(
+                      await prompt(
+                        context,
+                        title: Text('Agregar Directorio'),
+                        hintText: 'Directorio',
+                        textOK: Text('Agregar'),
+                        textCancel: Text('Cancelar'),
+                        controller: TextEditingController(),
+                      ),
+                    );
                   },
                   icon: Icon(Icons.add),
                 ),
@@ -87,7 +95,7 @@ class _Directorios extends StatelessWidget {
 class DataTableDirs extends StatelessWidget {
   final OpcionesController controller;
 
-  const DataTableDirs({super.key, required this.controller});
+  const DataTableDirs(this.controller, {super.key});
 
   @override
   Widget build(BuildContext context) {
