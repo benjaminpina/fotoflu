@@ -18,7 +18,7 @@ samples, guidance on mobile development, and a full API reference.
 ## Generador de código Isar
 Cada vez que se agregue o modifica un modelo de Isar, ejectutar
 ```bash
-flutter pub run build_runner build
+dart run build_runner build
 ```
 Los modelos nuevos se deben agregar a la lista de esquemas
 ```dart
