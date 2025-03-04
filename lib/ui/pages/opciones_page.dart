@@ -26,14 +26,9 @@ class OpcionesPage extends GetView<OpcionesController> {
         child: Row(
           children: [
             Spacer(),
-            ElevatedButton(
-              onPressed: () => Get.back(),
-              child: Row(children: [Icon(Icons.arrow_back), Text('Regresar')]),
-            ),
-            SizedBox(width: 20),
+
             ElevatedButton(
               onPressed: () {
-                controller.updateDirs();
                 Get.back();
               },
               child: Row(children: [Icon(Icons.check), Text('Aceptar')]),
@@ -67,24 +62,26 @@ class _Directorios extends StatelessWidget {
             height: 80,
             child: Row(
               children: [
-                IconButton(
-                  onPressed:
-                      controller.selectedRow.value != null
-                          ? () async {
-                            if (await confirm(
-                              context,
-                              title: Text('Eliminar Directorio'),
-                              content: Text(
-                                '¿Está seguro de eliminar el directorio seleccionado?',
-                              ),
-                            )) {
-                              controller.removeDir(
-                                controller.selectedRow.value!,
-                              );
+                Obx(
+                  () => IconButton(
+                    onPressed:
+                        controller.selectedRow.value != null
+                            ? () async {
+                              if (await confirm(
+                                context,
+                                title: Text('Eliminar Directorio'),
+                                content: Text(
+                                  '¿Está seguro de eliminar el directorio seleccionado?',
+                                ),
+                              )) {
+                                controller.removeDir(
+                                  controller.selectedRow.value!,
+                                );
+                              }
                             }
-                          }
-                          : null,
-                  icon: Icon(Icons.remove),
+                            : null,
+                    icon: Icon(Icons.remove),
+                  ),
                 ),
                 IconButton(
                   onPressed: () async {
