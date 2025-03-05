@@ -13,14 +13,7 @@ class OpcionesPage extends GetView<OpcionesController> {
       appBar: AppBar(title: Text('FotoFlu - Opciones')),
       body: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _Directorios(controller: controller),
-          Container(
-            padding: EdgeInsets.all(10),
-            color: Colors.blue,
-            child: Text('Destinos'),
-          ),
-        ],
+        children: [_Directorios(controller), _Destinos(controller)],
       ),
       bottomNavigationBar: BottomAppBar(
         child: Row(
@@ -29,6 +22,7 @@ class OpcionesPage extends GetView<OpcionesController> {
 
             ElevatedButton(
               onPressed: () {
+                controller.updateStorage();
                 Get.back();
               },
               child: Row(children: [Icon(Icons.check), Text('Aceptar')]),
@@ -41,8 +35,37 @@ class OpcionesPage extends GetView<OpcionesController> {
   }
 }
 
+class _Destinos extends StatelessWidget {
+  final OpcionesController controller;
+
+  const _Destinos(this.controller);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(10),
+      color: Colors.blue,
+      child: Column(
+        children: [
+          Text('Destinos'),
+          SizedBox(
+            width: 300,
+            child: TextField(
+              controller: controller.extRawController,
+              decoration: InputDecoration(
+                labelText: 'Extensión de Archivos Raw',
+                hintText: 'raw',
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _Directorios extends StatelessWidget {
-  const _Directorios({required this.controller});
+  const _Directorios(this.controller);
 
   final OpcionesController controller;
 

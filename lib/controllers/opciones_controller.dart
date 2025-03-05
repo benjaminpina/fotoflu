@@ -1,8 +1,13 @@
 import 'package:get/get.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:fotoflu/controllers/storage_controller.dart';
 import 'package:fotoflu/repositories/destino_repository.dart';
 
 class OpcionesController extends GetxController {
+  final storage = Get.find<StorageController>();
   final destinosController = Get.find<DestinoRepository>();
+  final extRawController = TextEditingController();
+
   final dirs = <String>[].obs;
   final selectedRow = Rxn<int>();
 
@@ -11,6 +16,7 @@ class OpcionesController extends GetxController {
     super.onInit();
     _getDirs();
     selectedRow.value = null;
+    extRawController.text = storage.extRaw;
   }
 
   void _getDirs() {
@@ -37,5 +43,9 @@ class OpcionesController extends GetxController {
     final nombre = dirs[index];
     await destinosController.updateDestino(nombre, dir);
     _getDirs();
+  }
+
+  void updateStorage() {
+    storage.extRaw = extRawController.text;
   }
 }
