@@ -221,16 +221,16 @@ class DataTableDirs extends StatelessWidget {
           rows: List<DataRow>.generate(
             controller.dirs.length,
             (int index) => DataRow(
-              color: MaterialStateProperty.resolveWith<Color?>((
-                Set<MaterialState> states,
+              color: WidgetStateProperty.resolveWith<Color?>((
+                Set<WidgetState> states,
               ) {
-                if (states.contains(MaterialState.selected)) {
+                if (states.contains(WidgetState.selected)) {
                   return Theme.of(
                     context,
-                  ).colorScheme.primary.withOpacity(0.08);
+                  ).colorScheme.primary.withValues(alpha: 0.08);
                 }
                 if (index.isEven) {
-                  return Colors.grey.withOpacity(0.3);
+                  return Colors.grey.withValues(alpha: 0.3);
                 }
                 return null; // Use default value for other states and odd rows.
               }),
