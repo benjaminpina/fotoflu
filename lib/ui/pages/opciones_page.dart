@@ -19,7 +19,6 @@ class OpcionesPage extends GetView<OpcionesController> {
         child: Row(
           children: [
             Spacer(),
-
             ElevatedButton(
               onPressed: () {
                 controller.updateStorage();
@@ -48,6 +47,7 @@ class _Destinos extends StatelessWidget {
       child: Column(
         children: [
           Text('Destinos'),
+          SizedBox(height: 20),
           SizedBox(
             width: 300,
             child: TextField(
@@ -55,6 +55,22 @@ class _Destinos extends StatelessWidget {
               decoration: InputDecoration(
                 labelText: 'Extensión de Archivos Raw',
                 hintText: 'raw',
+              ),
+            ),
+          ),
+          SizedBox(height: 20),
+          Text('Destino de Archivos JPG'),
+          SizedBox(
+            height: 300,
+            child: Obx(
+              () => DropdownButton<int>(
+                value: controller.selDestinoJPG.value,
+                items: controller.opcionesDestino,
+                onChanged: (int? newValue) {
+                  if (newValue != null) {
+                    controller.selDestinoJPG.value = newValue;
+                  }
+                },
               ),
             ),
           ),
@@ -108,16 +124,17 @@ class _Directorios extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () async {
-                    controller.addDir(
-                      await prompt(
-                        context,
-                        title: Text('Agregar Directorio'),
-                        hintText: 'Directorio',
-                        textOK: Text('Agregar'),
-                        textCancel: Text('Cancelar'),
-                        controller: TextEditingController(),
-                      ),
+                    final dir = await prompt(
+                      context,
+                      title: Text('Agregar Directorio'),
+                      hintText: 'Directorio',
+                      textOK: Text('Agregar'),
+                      textCancel: Text('Cancelar'),
+                      controller: TextEditingController(),
                     );
+                    if (dir != null) {
+                      controller.addDir(dir);
+                    }
                   },
                   icon: Icon(Icons.add),
                 ),
@@ -173,16 +190,16 @@ class DataTableDirs extends StatelessWidget {
           rows: List<DataRow>.generate(
             controller.dirs.length,
             (int index) => DataRow(
-              color: WidgetStateProperty.resolveWith<Color?>((
-                Set<WidgetState> states,
+              color: MaterialStateProperty.resolveWith<Color?>((
+                Set<MaterialState> states,
               ) {
-                if (states.contains(WidgetState.selected)) {
+                if (states.contains(MaterialState.selected)) {
                   return Theme.of(
                     context,
-                  ).colorScheme.primary.withValues(alpha: 0.08);
+                  ).colorScheme.primary.withOpacity(0.08);
                 }
                 if (index.isEven) {
-                  return Colors.grey.withValues(alpha: 0.3);
+                  return Colors.grey.withOpacity(0.3);
                 }
                 return null; // Use default value for other states and odd rows.
               }),

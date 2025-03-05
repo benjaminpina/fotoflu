@@ -14,9 +14,9 @@ class StorageController extends GetxController {
 
   String get dir => storage.read('dir') ?? '';
   String get extRaw => storage.read('extRaw') ?? 'cr2';
-  int get destJpg => storage.read('destJpg') ?? 0;
-  int get destRaw => storage.read('destRaw') ?? 0;
-  int get destSelect => storage.read('destSelect') ?? 0;
+  int get destJpg => storage.read('destJpg') ?? -1;
+  int get destRaw => storage.read('destRaw') ?? -1;
+  int get destSelect => storage.read('destSelect') ?? -1;
 
   set dir(String value) => storage.write('dir', value);
   set extRaw(String value) => storage.write('extRaw', value);
