@@ -43,7 +43,6 @@ class _Destinos extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(10),
-      color: Colors.blue,
       child: Column(
         children: [
           Text('Destinos'),
@@ -61,7 +60,7 @@ class _Destinos extends StatelessWidget {
           SizedBox(height: 20),
           Text('Destino de Archivos JPG'),
           SizedBox(
-            height: 300,
+            width: 300,
             child: Obx(
               () => DropdownButton<int>(
                 value: controller.selDestinoJPG.value,
@@ -69,6 +68,38 @@ class _Destinos extends StatelessWidget {
                 onChanged: (int? newValue) {
                   if (newValue != null) {
                     controller.selDestinoJPG.value = newValue;
+                  }
+                },
+              ),
+            ),
+          ),
+          SizedBox(height: 20),
+          Text('Destino de Archivos RAW'),
+          SizedBox(
+            width: 300,
+            child: Obx(
+              () => DropdownButton<int>(
+                value: controller.selDestinoRAW.value,
+                items: controller.opcionesDestino,
+                onChanged: (int? newValue) {
+                  if (newValue != null) {
+                    controller.selDestinoRAW.value = newValue;
+                  }
+                },
+              ),
+            ),
+          ),
+          SizedBox(height: 20),
+          Text('Destino de Archivos Seleccionados'),
+          SizedBox(
+            width: 300,
+            child: Obx(
+              () => DropdownButton<int>(
+                value: controller.selDestinoSelect.value,
+                items: controller.opcionesDestino,
+                onChanged: (int? newValue) {
+                  if (newValue != null) {
+                    controller.selDestinoSelect.value = newValue;
                   }
                 },
               ),

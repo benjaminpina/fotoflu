@@ -13,6 +13,8 @@ class OpcionesController extends GetxController {
 
   final opcionesDestino = <DropdownMenuItem<int>>[].obs;
   final selDestinoJPG = (-1).obs;
+  final selDestinoRAW = (-1).obs;
+  final selDestinoSelect = (-1).obs;
 
   @override
   void onInit() {
@@ -41,8 +43,16 @@ class OpcionesController extends GetxController {
             .toList();
 
     selDestinoJPG.value = storage.destJpg;
+    selDestinoRAW.value = storage.destRaw;
+    selDestinoSelect.value = storage.destSelect;
     if (opcionesDestino.isNotEmpty && selDestinoJPG.value == -1) {
       selDestinoJPG.value = opcionesDestino.first.value!;
+    }
+    if (opcionesDestino.isNotEmpty && selDestinoRAW.value == -1) {
+      selDestinoRAW.value = opcionesDestino.first.value!;
+    }
+    if (opcionesDestino.isNotEmpty && selDestinoSelect.value == -1) {
+      selDestinoSelect.value = opcionesDestino.first.value!;
     }
   }
 
@@ -70,5 +80,7 @@ class OpcionesController extends GetxController {
   void updateStorage() {
     storage.extRaw = extRawController.text;
     storage.destJpg = selDestinoJPG.value;
+    storage.destRaw = selDestinoRAW.value;
+    storage.destSelect = selDestinoSelect.value;
   }
 }

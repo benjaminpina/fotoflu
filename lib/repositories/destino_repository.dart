@@ -23,6 +23,7 @@ class DestinoRepository extends GetxController {
         Destino()..nombre = 'retocadas',
         Destino()..nombre = 'selladas',
         Destino()..nombre = 'achicadas',
+        Destino()..nombre = 'raw',
       ];
 
       // Agregar valores por defecto a la colección
