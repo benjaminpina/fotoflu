@@ -30,14 +30,7 @@ class GaleriaController extends GetxController {
       final imageDir = Directory(dir.value);
       if (await imageDir.exists()) {
         final imageFiles = imageDir.listSync().whereType<File>().toList();
-        final imageExtensions = [
-          '.jpg',
-          '.jpeg',
-          '.png',
-          '.gif',
-          '.bmp',
-          '.webp',
-        ];
+        final imageExtensions = ['.jpg', '.jpeg'];
 
         final filteredImages =
             imageFiles.where((file) {
