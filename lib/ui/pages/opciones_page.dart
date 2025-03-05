@@ -98,7 +98,35 @@ class _Directorios extends StatelessWidget {
                   },
                   icon: Icon(Icons.add),
                 ),
-                IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+                Obx(
+                  () => IconButton(
+                    onPressed:
+                        controller.selectedRow.value != null
+                            ? () async {
+                              final dir = await prompt(
+                                context,
+                                title: Text('Editar Directorio'),
+                                hintText: 'Directorio',
+                                textOK: Text('Guardar'),
+                                textCancel: Text('Cancelar'),
+                                controller: TextEditingController(
+                                  text:
+                                      controller.dirs[controller
+                                          .selectedRow
+                                          .value!],
+                                ),
+                              );
+                              if (dir != null) {
+                                controller.updateDir(
+                                  controller.selectedRow.value!,
+                                  dir,
+                                );
+                              }
+                            }
+                            : null,
+                    icon: Icon(Icons.edit),
+                  ),
+                ),
               ],
             ),
           ),

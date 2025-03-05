@@ -52,6 +52,20 @@ class DestinoRepository extends GetxController {
     }
   }
 
+  Future<void> updateDestino(String nombre, String nombreNuevo) async {
+    final destino = destinos.firstWhereOrNull((d) => d.nombre == nombre);
+
+    destinos.remove(destino);
+
+    if (destino != null) {
+      await isar.writeTxn(() async {
+        destino.nombre = nombreNuevo;
+        await isar.destinos.put(destino);
+      });
+      destinos.add(destino);
+    }
+  }
+
   Future<void> removeDestino(String nombre) async {
     final destino = destinos.firstWhereOrNull((d) => d.nombre == nombre);
 

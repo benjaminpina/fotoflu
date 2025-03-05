@@ -33,7 +33,9 @@ class OpcionesController extends GetxController {
     _getDirs();
   }
 
-  void updateDir(int index, String dir) {
-    dirs[index] = dir;
+  void updateDir(int index, String dir) async {
+    final nombre = dirs[index];
+    await destinosController.updateDestino(nombre, dir);
+    _getDirs();
   }
 }
