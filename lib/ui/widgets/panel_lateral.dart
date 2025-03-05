@@ -18,7 +18,11 @@ class PanelLateral extends GetView<PanelLateralController> {
         children: [
           SizedBox(width: double.infinity, height: 80, child: _Directorio()),
           Expanded(child: _Selecciones()),
-          SizedBox(width: double.infinity, height: 190, child: _Acciones()),
+          SizedBox(
+            width: double.infinity,
+            height: 190,
+            child: _Acciones(controller),
+          ),
           SizedBox(width: double.infinity, height: 100, child: _Botones()),
         ],
       ),
@@ -71,7 +75,9 @@ class _Botones extends StatelessWidget {
 }
 
 class _Acciones extends StatelessWidget {
-  const _Acciones();
+  final PanelLateralController controller;
+
+  const _Acciones(this.controller);
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +86,7 @@ class _Acciones extends StatelessWidget {
       child: Column(
         children: [
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () => controller.crearEstructura(),
             child: Row(
               children: [
                 Icon(Icons.perm_media),

@@ -20,10 +20,9 @@ class GaleriaController extends GetxController {
       currentPage.value = pageController.page ?? 0;
     });
     dir.value = storage.dir;
-    _loadImages();
   }
 
-  void _loadImages() async {
+  void loadImages() async {
     images.clear();
     currentPage.value = 0;
     try {
@@ -59,7 +58,7 @@ class GaleriaController extends GetxController {
   void setDir(String value) {
     dir.value = value;
     storage.dir = value;
-    _loadImages();
+    loadImages();
   }
 
   @override
