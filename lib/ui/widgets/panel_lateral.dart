@@ -5,6 +5,7 @@ import 'package:fotoflu/services/application.dart';
 import 'package:get/get.dart';
 import 'package:fotoflu/controllers/galeria_controller.dart';
 import 'package:fotoflu/controllers/panel_lateral_controller.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class PanelLateral extends GetView<PanelLateralController> {
   const PanelLateral({super.key});
@@ -47,6 +48,8 @@ class _Botones extends StatelessWidget {
           onPressed:
               () => showDialog<String>(
                 context: context,
+                barrierDismissible:
+                    false, // evitar que se cierre al tocar fuera
                 builder:
                     (BuildContext context) => AlertDialog(
                       title: const Text('FotoFlu'),
@@ -81,6 +84,8 @@ class _Acciones extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     return Container(
       padding: const EdgeInsets.all(15),
       child: Column(
@@ -96,7 +101,46 @@ class _Acciones extends StatelessWidget {
           ),
           SizedBox(height: 10),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              controller.distribuirRawJpg(context);
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Obx(() => Text(controller.title.value)),
+                    content: SizedBox(
+                      height: 100,
+                      width: width * 0.5,
+                      child: Column(
+                        children: [
+                          Obx(
+                            () => Column(
+                              children: [
+                                LinearPercentIndicator(
+                                  percent: controller.progress.value,
+                                  lineHeight: 20,
+                                  center: Text(
+                                    "${(controller.progress.value * 100).toStringAsFixed(1)}%",
+                                  ),
+                                  progressColor: Colors.black,
+                                ),
+                                SizedBox(height: 10),
+                                Text(controller.counter.value),
+                                SizedBox(height: 5),
+                                Text(controller.archOrigen.value),
+                                SizedBox(height: 5),
+                                Text(controller.archDestino.value),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
             child: Row(
               children: [Icon(Icons.move_down), Text('Distribuir raw y jpg')],
             ),

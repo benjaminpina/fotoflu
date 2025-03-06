@@ -48,20 +48,25 @@ Future<String?> copyFile(
   return null;
 }
 
-Future<List<String>> filesByExt(String parentDir, String ext) async {
+Future<List<String>> filesByExt(String parentDir, List<String> exts) async {
   final dir = Directory(parentDir);
   List<String> fileList = [];
 
   try {
-    final entidades = dir.list();
-    await for (FileSystemEntity entidad in entidades) {
-      if (entidad is File && entidad.path.endsWith(ext)) {
-        fileList.add(entidad.path);
-      }
+    final files = dir.listSync().whereType<File>().toList();
+
+    final filteredFiles =
+        files.where((file) {
+          final extension = file.path.split('.').last.toLowerCase();
+          return exts.contains('.$extension');
+        }).toList();
+
+    for (final file in filteredFiles) {
+      fileList.add(file.path);
     }
   } catch (e) {
     if (kDebugMode) {
-      print('Error al listar archivos: $e');
+      print('Error al leer archivos: $e');
     }
   }
 
