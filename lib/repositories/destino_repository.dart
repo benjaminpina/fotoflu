@@ -1,7 +1,7 @@
-import 'package:fotoflu/db/isar_service.dart';
-import 'package:fotoflu/models/destino.dart';
 import 'package:get/get.dart';
 import 'package:isar/isar.dart';
+import 'package:fotoflu/db/isar_service.dart';
+import 'package:fotoflu/models/destino.dart';
 
 class DestinoRepository extends GetxController {
   final isar = IsarService().isar;
