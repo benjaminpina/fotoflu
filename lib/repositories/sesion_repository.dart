@@ -6,7 +6,7 @@ import 'package:fotoflu/models/sesion.dart';
 class SesionRepository extends GetxController {
   final isar = IsarService().isar;
 
-  final sesiones = <Sesion>[];
+  final sesiones = <Sesion>[].obs;
 
   @override
   void onInit() {
