@@ -1,8 +1,8 @@
-import 'package:fotoflu/models/grupo.dart';
-import 'package:fotoflu/models/sesion.dart';
 import 'package:get/get.dart';
 import 'package:isar/isar.dart';
 import 'package:fotoflu/db/isar_service.dart';
+import 'package:fotoflu/models/grupo.dart';
+import 'package:fotoflu/models/sesion.dart';
 
 class GrupoRepository extends GetxController {
   final isar = IsarService().isar;

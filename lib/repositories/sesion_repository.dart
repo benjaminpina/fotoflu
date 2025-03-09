@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:isar/isar.dart';
 import 'package:fotoflu/db/isar_service.dart';
 import 'package:fotoflu/models/sesion.dart';
+import 'package:fotoflu/models/grupo.dart';
+import 'package:fotoflu/models/foto.dart';
 
 class SesionRepository extends GetxController {
   final isar = IsarService().isar;
@@ -34,8 +36,19 @@ class SesionRepository extends GetxController {
   Future<void> deleteSesion(int id) async {
     final sesion = sesiones.firstWhereOrNull((s) => s.id == id);
 
+    if (sesion == null) {
+      return;
+    }
+
     await isar.writeTxn(() async {
-      await isar.sesions.delete(sesion!.id);
+      // Eliminar todas las fotos y grupos de la sesión
+      await isar.fotos.where().filter().sesion((q) {
+        return q.idEqualTo(sesion.id);
+      }).deleteAll();
+      await isar.grupos.where().filter().sesion((q) {
+        return q.idEqualTo(sesion.id);
+      }).deleteAll();
+      await isar.sesions.delete(sesion.id);
     });
     sesiones.remove(sesion);
   }
