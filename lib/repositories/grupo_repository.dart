@@ -7,14 +7,13 @@ import 'package:fotoflu/db/isar_service.dart';
 class GrupoRepository extends GetxController {
   final isar = IsarService().isar;
 
-  final grupos = <Grupo>[].obs;
+  Future<List<Grupo>> getGruposBySesionId(int sesionId) async {
+    final grupos =
+        isar.grupos.where().filter().sesion((q) {
+          return q.idEqualTo(sesionId);
+        }).findAllSync();
 
-  @override
-  void onInit() {
-    super.onInit();
-
-    final allGrupos = isar.grupos.where().findAllSync();
-    grupos.addAll(allGrupos);
+    return grupos;
   }
 
   Future<void> addGrupo(String nombre, Sesion sesion) async {
@@ -22,18 +21,15 @@ class GrupoRepository extends GetxController {
       return;
     }
 
-    if (!grupos.any((g) => g.nombre == nombre)) {
-      final grupo =
-          Grupo()
-            ..nombre = nombre
-            ..sesion.value = sesion;
+    final grupo =
+        Grupo()
+          ..nombre = nombre
+          ..sesion.value = sesion;
 
-      await isar.writeTxn(() async {
-        await isar.grupos.put(grupo);
-        await grupo.sesion.save();
-      });
-      grupos.add(grupo);
-    }
+    await isar.writeTxn(() async {
+      await isar.grupos.put(grupo);
+      await grupo.sesion.save();
+    });
   }
 
   Future<void> updateGrupo(int id, String nombre) async {
@@ -47,16 +43,17 @@ class GrupoRepository extends GetxController {
         return;
       }
     });
-
-    grupos.firstWhere((g) => g.id == id).nombre = nombre;
   }
 
   Future<void> deleteGrupo(int id) async {
-    final grupo = grupos.firstWhereOrNull((g) => g.id == id);
-
     await isar.writeTxn(() async {
-      await isar.grupos.delete(grupo!.id);
+      final grupo = await isar.grupos.get(id);
+
+      if (grupo != null) {
+        await isar.grupos.delete(grupo.id);
+      } else {
+        return;
+      }
     });
-    grupos.remove(grupo);
   }
 }
