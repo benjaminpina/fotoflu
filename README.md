@@ -20,7 +20,7 @@ Cada vez que se agregue o modifica un modelo de Isar, ejectutar
 ```bash
 dart run build_runner build
 ```
-Los modelos nuevos se deben agregar a la lista de esquemas
+Los modelos nuevos se deben agregar a la lista de esquemas en el lib/db/archivo isar_service.dart
 ```dart
 final dir = await getApplicationDocumentsDirectory();
 final isar = await Isar.open(
