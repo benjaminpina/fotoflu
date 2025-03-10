@@ -18,6 +18,7 @@ class PanelLateralController extends GetxController {
   final sesiones = Get.find<SesionRepository>();
   final grupos = Get.find<GrupoRepository>();
   final fotos = Get.find<FotoRepository>();
+  final cambioController = TextEditingController();
 
   final dir = ''.obs;
   final progress = 0.0.obs;
@@ -34,6 +35,14 @@ class PanelLateralController extends GetxController {
     super.onInit();
     dir.value = storage.dir;
     selectedRow.value = null;
+    cambioController.text = '';
+    selectedRow.listen((value) {
+      if (value != null) {
+        cambioController.text = listaGrupos[value].nombre ?? '';
+      } else {
+        cambioController.text = '';
+      }
+    });
   }
 
   void setDir(String value) {
@@ -198,6 +207,30 @@ class PanelLateralController extends GetxController {
     final lista = await fotos.getFotosBySesionId(sesion.id);
     listaGrupos.value = await grupos.getGruposBySesionId(sesion.id);
     galeriaController.setImages(lista);
+  }
+
+  void addGrupo(String nombre) async {
+    final sesion = await sesiones.getSesionByCarpeta(dir.value);
+    if (sesion != null) {
+      await grupos.addGrupo(nombre, sesion);
+      listaGrupos.value = await grupos.getGruposBySesionId(sesion.id);
+    }
+  }
+
+  void updateGrupo(int id, String nombre) async {
+    final sesion = await sesiones.getSesionByCarpeta(dir.value);
+    if (sesion != null) {
+      await grupos.updateGrupo(id, nombre);
+      listaGrupos.value = await grupos.getGruposBySesionId(sesion.id);
+    }
+  }
+
+  void removeGrupo(int id) async {
+    final sesion = await sesiones.getSesionByCarpeta(dir.value);
+    if (sesion != null) {
+      await grupos.deleteGrupo(id);
+      listaGrupos.value = await grupos.getGruposBySesionId(sesion.id);
+    }
   }
 
   String _getDirJpg() {

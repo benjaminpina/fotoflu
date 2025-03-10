@@ -1,3 +1,4 @@
+import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fotoflu/routes/app_routes.dart';
@@ -5,6 +6,7 @@ import 'package:fotoflu/services/application.dart';
 import 'package:get/get.dart';
 import 'package:fotoflu/controllers/panel_lateral_controller.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:prompt_dialog/prompt_dialog.dart';
 
 class PanelLateral extends GetView<PanelLateralController> {
   const PanelLateral({super.key});
@@ -185,6 +187,7 @@ class _Grupos extends StatelessWidget {
             height: 40,
             width: double.infinity,
             child: TextField(
+              controller: controller.cambioController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Cambio',
@@ -208,8 +211,47 @@ class _Grupos extends StatelessWidget {
                     height: double.infinity,
                     child: Column(
                       children: [
-                        IconButton(onPressed: () {}, icon: Icon(Icons.add)),
-                        IconButton(onPressed: () {}, icon: Icon(Icons.remove)),
+                        IconButton(
+                          onPressed: () async {
+                            final cambio = await prompt(
+                              context,
+                              title: Text('Agregar Cambio'),
+                              hintText: 'Cambio',
+                              textOK: Text('Agregar'),
+                              textCancel: Text('Cancelar'),
+                              controller: TextEditingController(),
+                            );
+                            if (cambio != null) {
+                              controller.addGrupo(cambio);
+                            }
+                          },
+                          icon: Icon(Icons.add),
+                        ),
+                        Obx(
+                          () => IconButton(
+                            onPressed:
+                                controller.selectedRow.value != null
+                                    ? () async {
+                                      if (await confirm(
+                                        context,
+                                        title: Text('Eliminar Cambio'),
+                                        content: Text(
+                                          '¿Está seguro de eliminar el cambio seleccionado?',
+                                        ),
+                                      )) {
+                                        controller.removeGrupo(
+                                          controller
+                                              .listaGrupos[controller
+                                                  .selectedRow
+                                                  .value!]
+                                              .id,
+                                        );
+                                      }
+                                    }
+                                    : null,
+                            icon: Icon(Icons.remove),
+                          ),
+                        ),
                         Spacer(),
                         IconButton(
                           onPressed: () {},
