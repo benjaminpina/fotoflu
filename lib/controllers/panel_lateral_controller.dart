@@ -18,7 +18,6 @@ class PanelLateralController extends GetxController {
   final sesiones = Get.find<SesionRepository>();
   final grupos = Get.find<GrupoRepository>();
   final fotos = Get.find<FotoRepository>();
-  final cambioController = TextEditingController();
 
   final dir = ''.obs;
   final progress = 0.0.obs;
@@ -35,14 +34,6 @@ class PanelLateralController extends GetxController {
     super.onInit();
     dir.value = storage.dir;
     selectedRow.value = null;
-    cambioController.text = '';
-    selectedRow.listen((value) {
-      if (value != null) {
-        cambioController.text = listaGrupos[value].nombre ?? '';
-      } else {
-        cambioController.text = '';
-      }
-    });
   }
 
   void setDir(String value) {

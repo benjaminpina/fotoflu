@@ -183,17 +183,6 @@ class _Grupos extends StatelessWidget {
       padding: const EdgeInsets.all(15),
       child: Column(
         children: [
-          SizedBox(
-            height: 40,
-            width: double.infinity,
-            child: TextField(
-              controller: controller.cambioController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Cambio',
-              ),
-            ),
-          ),
           Expanded(
             child: SizedBox(
               width: double.infinity,
