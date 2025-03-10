@@ -25,8 +25,10 @@ class PanelLateralController extends GetxController {
   final archOrigen = ''.obs;
   final archDestino = ''.obs;
   final listaGrupos = <Grupo>[].obs;
+  final cambioIdSelected = Rxn<int>();
   final selectedRow = Rxn<int>();
   final title = 'Copiando...'.obs;
+  final filtrado = false.obs;
   final waiting = false.obs;
 
   @override
@@ -34,6 +36,16 @@ class PanelLateralController extends GetxController {
     super.onInit();
     dir.value = storage.dir;
     selectedRow.value = null;
+    cambioIdSelected.value = null;
+
+    // Actualizar id de grupo seleccionado al cambiar la fila seleccionada
+    selectedRow.listen((value) {
+      if (value != null) {
+        cambioIdSelected.value = listaGrupos[value].id;
+      } else {
+        cambioIdSelected.value = null;
+      }
+    });
   }
 
   void setDir(String value) {
@@ -192,12 +204,33 @@ class PanelLateralController extends GetxController {
     final lista = await fotos.getFotosBySesionId(sesion.id);
     listaGrupos.value = await grupos.getGruposBySesionId(sesion.id);
     galeriaController.setImages(lista);
+    selectedRow.value = 0;
   }
 
   Future<void> _continuaSesion(Sesion sesion) async {
     final lista = await fotos.getFotosBySesionId(sesion.id);
     listaGrupos.value = await grupos.getGruposBySesionId(sesion.id);
     galeriaController.setImages(lista);
+    if (listaGrupos.isNotEmpty) {
+      selectedRow.value = 0;
+    } else {
+      selectedRow.value = null;
+    }
+  }
+
+  Future<void> filtrarPorGrupo(int id) async {
+    filtrado.value = true;
+    final lista = await fotos.getFotosByGrupoId(id);
+    galeriaController.setImages(lista);
+  }
+
+  Future<void> eliminarFiltro() async {
+    filtrado.value = false;
+    final sesion = await sesiones.getSesionByCarpeta(dir.value);
+    if (sesion != null) {
+      final lista = await fotos.getFotosBySesionId(sesion.id);
+      galeriaController.setImages(lista);
+    }
   }
 
   void addGrupo(String nombre) async {

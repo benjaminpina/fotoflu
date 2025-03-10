@@ -229,11 +229,7 @@ class _Grupos extends StatelessWidget {
                                         ),
                                       )) {
                                         controller.removeGrupo(
-                                          controller
-                                              .listaGrupos[controller
-                                                  .selectedRow
-                                                  .value!]
-                                              .id,
+                                          controller.cambioIdSelected.value!,
                                         );
                                       }
                                     }
@@ -263,11 +259,7 @@ class _Grupos extends StatelessWidget {
                                       );
                                       if (nombre != null) {
                                         controller.updateGrupo(
-                                          controller
-                                              .listaGrupos[controller
-                                                  .selectedRow
-                                                  .value!]
-                                              .id,
+                                          controller.cambioIdSelected.value!,
                                           nombre,
                                         );
                                       }
@@ -277,9 +269,22 @@ class _Grupos extends StatelessWidget {
                           ),
                         ),
                         Spacer(),
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(Icons.filter_alt),
+                        Obx(
+                          () => IconButton(
+                            onPressed:
+                                controller.cambioIdSelected.value != null
+                                    ? () {
+                                      if (controller.filtrado.value) {
+                                        controller.eliminarFiltro();
+                                      } else {
+                                        controller.filtrarPorGrupo(
+                                          controller.cambioIdSelected.value!,
+                                        );
+                                      }
+                                    }
+                                    : null,
+                            icon: Icon(Icons.filter_alt),
+                          ),
                         ),
                       ],
                     ),
