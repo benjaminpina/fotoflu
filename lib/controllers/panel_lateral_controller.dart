@@ -175,20 +175,22 @@ class PanelLateralController extends GetxController {
       return;
     }
 
-    // Ordenar las imágenes por nombre
-    seleccionables.sort((a, b) => a.compareTo(b));
     // Agregar sesión a BD
     final sesion = await sesiones.addSesion(dir.value);
     // Agregar fotos a BD
     for (final jpg in seleccionables) {
       fotos.addFoto(jpg, sesion);
     }
-    // Agreagr un grupo inicial a BD
+    // Agreagar un grupo inicial a BD
     await grupos.addGrupo('Cambio 1', sesion);
-    galeriaController.setImages(seleccionables);
+    final lista = await fotos.getFotosBySesionId(sesion.id);
+    galeriaController.setImages(lista);
   }
 
-  Future<void> _continuaSesion(Sesion sesion) async {}
+  Future<void> _continuaSesion(Sesion sesion) async {
+    final lista = await fotos.getFotosBySesionId(sesion.id);
+    galeriaController.setImages(lista);
+  }
 
   String _getDirJpg() {
     return '${storage.dir}/${destinos.destinos.firstWhereOrNull((d) => d.id == storage.destJpg)?.nombre ?? ''}';

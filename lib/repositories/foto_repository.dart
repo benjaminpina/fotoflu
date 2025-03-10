@@ -10,18 +10,28 @@ class FotoRepository extends GetxController {
 
   Future<List<Foto>> getFotosBySesionId(int sesionId) async {
     final fotos =
-        isar.fotos.where().filter().sesion((q) {
-          return q.idEqualTo(sesionId);
-        }).findAllSync();
+        isar.fotos
+            .where()
+            .filter()
+            .sesion((q) {
+              return q.idEqualTo(sesionId);
+            })
+            .sortByNombre()
+            .findAllSync();
 
     return fotos;
   }
 
   Future<List<Foto>> getFotosByGrupoId(int grupoId) async {
     final fotos =
-        isar.fotos.where().filter().grupo((q) {
-          return q.idEqualTo(grupoId);
-        }).findAllSync();
+        isar.fotos
+            .where()
+            .filter()
+            .grupo((q) {
+              return q.idEqualTo(grupoId);
+            })
+            .sortByNombre()
+            .findAllSync();
 
     return fotos;
   }

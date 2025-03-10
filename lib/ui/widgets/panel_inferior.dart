@@ -79,7 +79,7 @@ class _ControlesNavegacion extends StatelessWidget {
                   ? p.basename(
                     galeriaController
                         .images[galeriaController.currentPage.toInt()]
-                        .path,
+                        .nombre!,
                   )
                   : '',
             ),

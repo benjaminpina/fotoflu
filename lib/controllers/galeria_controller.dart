@@ -1,13 +1,13 @@
-import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:fotoflu/controllers/storage_controller.dart';
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:fotoflu/models/foto.dart';
+import 'package:fotoflu/controllers/storage_controller.dart';
 
 class GaleriaController extends GetxController {
   final storage = Get.find<StorageController>();
   final PageController pageController = PageController();
 
-  var images = <File>[].obs;
+  var images = <Foto>[].obs;
   var maxImages = 0.obs;
   var currentPage = 0.0.obs;
 
@@ -19,9 +19,9 @@ class GaleriaController extends GetxController {
     });
   }
 
-  void setImages(List<String> lista) async {
+  void setImages(List<Foto> lista) async {
     images.clear();
-    images.addAll(lista.map((path) => File(path)));
+    images.addAll(lista);
     maxImages.value = images.length;
   }
 
