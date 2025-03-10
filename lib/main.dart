@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fotoflu/controllers/storage_controller.dart';
-import 'package:fotoflu/db/isar_service.dart';
 import 'package:get/get.dart';
-import 'package:fotoflu/routes/app_pages.dart';
 import 'package:fotoflu/routes/app_routes.dart';
+import 'package:fotoflu/routes/app_pages.dart';
+import 'package:fotoflu/db/isar_service.dart';
+import 'package:fotoflu/controllers/storage_controller.dart';
 import 'package:get_storage/get_storage.dart';
 
 void main() async {

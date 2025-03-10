@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:path/path.dart' as p;
-import 'package:fotoflu/controllers/galeria_controller.dart';
 import 'package:fotoflu/controllers/panel_inferior_controller.dart';
 
 class PanelInferior extends GetView<PanelInferiorController> {
@@ -12,14 +10,20 @@ class PanelInferior extends GetView<PanelInferiorController> {
     return SizedBox(
       width: double.infinity,
       height: 120,
-      child: Column(children: [_ControlesNavegacion(), _BarraNavegacion()]),
+      child: Column(
+        children: [
+          _ControlesNavegacion(controller),
+          _BarraNavegacion(controller),
+        ],
+      ),
     );
   }
 }
 
 class _ControlesNavegacion extends StatelessWidget {
-  final galeriaController = Get.find<GaleriaController>();
-  final pageController = Get.find<GaleriaController>().pageController;
+  final PanelInferiorController controller;
+
+  const _ControlesNavegacion(this.controller);
 
   @override
   Widget build(BuildContext context) {
@@ -29,25 +33,11 @@ class _ControlesNavegacion extends StatelessWidget {
         children: [
           IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              if (pageController.page! > 0) {
-                pageController.previousPage(
-                  duration: Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                );
-              }
-            },
+            onPressed: () => controller.previousPage(),
           ),
           IconButton(
             icon: const Icon(Icons.arrow_forward),
-            onPressed: () {
-              if (pageController.page! < galeriaController.images.length - 1) {
-                pageController.nextPage(
-                  duration: Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                );
-              }
-            },
+            onPressed: () => controller.nextPage(),
           ),
           IconButton(icon: const Icon(Icons.check), onPressed: () {}),
           IconButton(icon: const Icon(Icons.close), onPressed: () {}),
@@ -58,32 +48,22 @@ class _ControlesNavegacion extends StatelessWidget {
             width: 200,
             child: TextField(
               readOnly: true,
-              decoration: InputDecoration(
-                labelText: 'Cambio',
-                border: OutlineInputBorder(),
-              ),
+              controller: controller.cambioEditing,
+              decoration: InputDecoration(border: OutlineInputBorder()),
             ),
           ),
           SizedBox(width: 20),
           Obx(
             () => Text(
-              (galeriaController.currentPage.value + 1).toInt().toString(),
-            ),
-          ),
-          Text('/'),
-          Obx(() => Text(galeriaController.maxImages.value.toString())),
-          SizedBox(width: 20),
-          Obx(
-            () => Text(
-              galeriaController.images.isNotEmpty
-                  ? p.basename(
-                    galeriaController
-                        .images[galeriaController.currentPage.toInt()]
-                        .nombre!,
-                  )
+              controller.currentPage.value != null
+                  ? (controller.currentPage.value! + 1).toInt().toString()
                   : '',
             ),
           ),
+          Text('/'),
+          Obx(() => Text(controller.maxImages.value.toString())),
+          SizedBox(width: 20),
+          Obx(() => Text(controller.nombreArchivo.value)),
         ],
       ),
     );
@@ -91,9 +71,9 @@ class _ControlesNavegacion extends StatelessWidget {
 }
 
 class _BarraNavegacion extends StatelessWidget {
-  final galeriaController = Get.find<GaleriaController>();
-  final pageController = Get.find<GaleriaController>().pageController;
+  final PanelInferiorController controller;
 
+  const _BarraNavegacion(this.controller);
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -109,12 +89,15 @@ class _BarraNavegacion extends StatelessWidget {
             return Obx(
               () => Slider(
                 max:
-                    galeriaController.maxImages > 0
-                        ? galeriaController.maxImages.value.toDouble() - 1
+                    controller.maxImages > 0
+                        ? controller.maxImages.value.toDouble() - 1
                         : 0,
-                value: galeriaController.currentPage.value,
+                value:
+                    controller.currentPage.value! > -1
+                        ? controller.currentPage.value!
+                        : 0,
                 onChanged: (double value) {
-                  pageController.jumpToPage(value.toInt());
+                  controller.goToPage(value.toInt());
                 },
               ),
             );

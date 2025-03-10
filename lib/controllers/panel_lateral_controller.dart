@@ -6,6 +6,7 @@ import 'package:fotoflu/models/grupo.dart';
 import "package:fotoflu/services/files.dart";
 import 'package:fotoflu/controllers/storage_controller.dart';
 import 'package:fotoflu/controllers/galeria_controller.dart';
+import 'package:fotoflu/controllers/panel_inferior_controller.dart';
 import 'package:fotoflu/repositories/destino_repository.dart';
 import 'package:fotoflu/repositories/sesion_repository.dart';
 import 'package:fotoflu/repositories/foto_repository.dart';
@@ -14,6 +15,7 @@ import 'package:fotoflu/repositories/grupo_repository.dart';
 class PanelLateralController extends GetxController {
   final storage = Get.find<StorageController>();
   final galeriaController = Get.find<GaleriaController>();
+  final panelInferiorController = Get.find<PanelInferiorController>();
   final destinos = Get.find<DestinoRepository>();
   final sesiones = Get.find<SesionRepository>();
   final grupos = Get.find<GrupoRepository>();
@@ -205,6 +207,7 @@ class PanelLateralController extends GetxController {
     listaGrupos.value = await grupos.getGruposBySesionId(sesion.id);
     galeriaController.setImages(lista);
     selectedRow.value = 0;
+    panelInferiorController.goToPage(0);
   }
 
   Future<void> _continuaSesion(Sesion sesion) async {
@@ -216,12 +219,14 @@ class PanelLateralController extends GetxController {
     } else {
       selectedRow.value = null;
     }
+    panelInferiorController.goToPage(0);
   }
 
   Future<void> filtrarPorGrupo(int id) async {
     filtrado.value = true;
     final lista = await fotos.getFotosByGrupoId(id);
     galeriaController.setImages(lista);
+    panelInferiorController.goToPage(0);
   }
 
   Future<void> eliminarFiltro() async {
@@ -230,6 +235,7 @@ class PanelLateralController extends GetxController {
     if (sesion != null) {
       final lista = await fotos.getFotosBySesionId(sesion.id);
       galeriaController.setImages(lista);
+      panelInferiorController.goToPage(0);
     }
   }
 
