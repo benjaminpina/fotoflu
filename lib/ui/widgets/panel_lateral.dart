@@ -241,6 +241,41 @@ class _Grupos extends StatelessWidget {
                             icon: Icon(Icons.remove),
                           ),
                         ),
+                        Obx(
+                          () => IconButton(
+                            onPressed:
+                                controller.selectedRow.value != null
+                                    ? () async {
+                                      final nombre = await prompt(
+                                        context,
+                                        title: Text('Editar Cambio'),
+                                        hintText: 'Cambio',
+                                        textOK: Text('Guardar'),
+                                        textCancel: Text('Cancelar'),
+                                        controller: TextEditingController(
+                                          text:
+                                              controller
+                                                  .listaGrupos[controller
+                                                      .selectedRow
+                                                      .value!]
+                                                  .nombre,
+                                        ),
+                                      );
+                                      if (nombre != null) {
+                                        controller.updateGrupo(
+                                          controller
+                                              .listaGrupos[controller
+                                                  .selectedRow
+                                                  .value!]
+                                              .id,
+                                          nombre,
+                                        );
+                                      }
+                                    }
+                                    : null,
+                            icon: Icon(Icons.edit),
+                          ),
+                        ),
                         Spacer(),
                         IconButton(
                           onPressed: () {},
