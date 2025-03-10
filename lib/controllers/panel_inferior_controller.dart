@@ -26,8 +26,16 @@ class PanelInferiorController extends GetxController {
     try {
       nombreArchivo.value =
           galeriaController.images[pageController.page!.toInt()].nombre ?? '';
+      cambioEditing.text =
+          galeriaController
+              .images[pageController.page!.toInt()]
+              .grupo
+              .value
+              ?.nombre ??
+          '';
     } catch (e) {
       nombreArchivo.value = '';
+      cambioEditing.text = '';
     }
   }
 
