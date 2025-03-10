@@ -8,33 +8,31 @@ import 'package:fotoflu/models/foto.dart';
 class SesionRepository extends GetxController {
   final isar = IsarService().isar;
 
-  final sesiones = <Sesion>[].obs;
+  Future<Sesion> addSesion(String carpeta) async {
+    final sesionPrevia =
+        await isar.sesions.filter().carpetaEqualTo(carpeta).findFirst();
 
-  @override
-  void onInit() {
-    super.onInit();
-
-    final allSesiones = isar.sesions.where().findAllSync();
-    sesiones.addAll(allSesiones);
-  }
-
-  Future<void> addSesion(String carpeta) async {
-    if (carpeta.isEmpty) {
-      return;
-    }
-
-    if (!sesiones.any((s) => s.carpeta == carpeta)) {
+    if (sesionPrevia == null) {
       final sesion = Sesion()..carpeta = carpeta;
 
       await isar.writeTxn(() async {
         await isar.sesions.put(sesion);
       });
-      sesiones.add(sesion);
+      return sesion;
     }
+
+    return sesionPrevia;
+  }
+
+  Future<Sesion?> getSesionByCarpeta(String carpeta) async {
+    final sesion =
+        await isar.sesions.filter().carpetaEqualTo(carpeta).findFirst();
+
+    return sesion;
   }
 
   Future<void> deleteSesion(int id) async {
-    final sesion = sesiones.firstWhereOrNull((s) => s.id == id);
+    final sesion = await isar.sesions.get(id);
 
     if (sesion == null) {
       return;
@@ -50,6 +48,5 @@ class SesionRepository extends GetxController {
       }).deleteAll();
       await isar.sesions.delete(sesion.id);
     });
-    sesiones.remove(sesion);
   }
 }

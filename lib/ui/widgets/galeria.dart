@@ -15,23 +15,19 @@ class Galeria extends StatelessWidget {
       width: double.infinity,
       height: double.infinity,
       child: Obx(() {
-        if (controller.errorMessage.isNotEmpty) {
-          return Center(child: Text(controller.errorMessage.value));
-        } else {
-          return PhotoViewGallery.builder(
-            itemCount: controller.images.length,
-            builder: (context, index) {
-              return PhotoViewGalleryPageOptions(
-                imageProvider: FileImage(controller.images[index]),
-                minScale: PhotoViewComputedScale.contained,
-                maxScale: PhotoViewComputedScale.covered * 2,
-              );
-            },
-            scrollPhysics: BouncingScrollPhysics(),
-            backgroundDecoration: BoxDecoration(color: Colors.black),
-            pageController: controller.pageController,
-          );
-        }
+        return PhotoViewGallery.builder(
+          itemCount: controller.images.length,
+          builder: (context, index) {
+            return PhotoViewGalleryPageOptions(
+              imageProvider: FileImage(controller.images[index]),
+              minScale: PhotoViewComputedScale.contained,
+              maxScale: PhotoViewComputedScale.covered * 2,
+            );
+          },
+          scrollPhysics: BouncingScrollPhysics(),
+          backgroundDecoration: BoxDecoration(color: Colors.black),
+          pageController: controller.pageController,
+        );
       }),
     );
   }

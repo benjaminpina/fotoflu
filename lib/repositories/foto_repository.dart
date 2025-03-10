@@ -26,7 +26,7 @@ class FotoRepository extends GetxController {
     return fotos;
   }
 
-  Future<void> addFoto(String nombre, Grupo grupo, Sesion sesion) async {
+  Future<void> addFoto(String nombre, Sesion sesion) async {
     if (nombre.isEmpty) {
       return;
     }
@@ -34,7 +34,7 @@ class FotoRepository extends GetxController {
     final foto =
         Foto()
           ..nombre = nombre
-          ..grupo.value = grupo
+          ..grupo.value = null
           ..sesion.value = sesion;
 
     await isar.writeTxn(() async {

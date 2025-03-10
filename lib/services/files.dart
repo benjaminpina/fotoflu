@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 
 Future<Directory> _createFolder(String folderName) async {
@@ -71,4 +70,9 @@ Future<List<String>> filesByExt(String parentDir, List<String> exts) async {
   }
 
   return fileList;
+}
+
+Future<bool> directoryExists(String path) async {
+  final dir = Directory(path);
+  return await dir.exists();
 }

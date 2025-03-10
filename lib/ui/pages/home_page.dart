@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:fotoflu/controllers/galeria_controller.dart';
+import 'package:get/get.dart';
 import 'package:fotoflu/controllers/home_controller.dart';
+import 'package:fotoflu/controllers/panel_lateral_controller.dart';
 import 'package:fotoflu/ui/widgets/galeria.dart';
 import 'package:fotoflu/ui/widgets/panel_inferior.dart';
 import 'package:fotoflu/ui/widgets/panel_lateral.dart';
-import 'package:get/get.dart';
 
 class HomePage extends GetView<HomeController> {
   HomePage({super.key});
 
-  final galeriaController = Get.find<GaleriaController>();
+  final panelLateralController = Get.find<PanelLateralController>();
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,10 @@ class HomePage extends GetView<HomeController> {
             children: [
               const Text('FotoFlu'),
               SizedBox(width: 20),
-              Text(galeriaController.dir.value, style: TextStyle(fontSize: 14)),
+              Text(
+                panelLateralController.dir.value,
+                style: TextStyle(fontSize: 14),
+              ),
             ],
           ),
         ),

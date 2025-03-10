@@ -3,7 +3,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:fotoflu/routes/app_routes.dart';
 import 'package:fotoflu/services/application.dart';
 import 'package:get/get.dart';
-import 'package:fotoflu/controllers/galeria_controller.dart';
 import 'package:fotoflu/controllers/panel_lateral_controller.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -17,7 +16,11 @@ class PanelLateral extends GetView<PanelLateralController> {
       height: double.infinity,
       child: Column(
         children: [
-          SizedBox(width: double.infinity, height: 80, child: _Directorio()),
+          SizedBox(
+            width: double.infinity,
+            height: 80,
+            child: _Directorio(controller),
+          ),
           Expanded(child: _Selecciones()),
           SizedBox(
             width: double.infinity,
@@ -147,7 +150,9 @@ class _Acciones extends StatelessWidget {
           ),
           SizedBox(height: 10),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              controller.explorarImagenes(context);
+            },
             child: Row(
               children: [Icon(Icons.view_carousel), Text('Explorar imágenes')],
             ),
@@ -236,9 +241,9 @@ class _Selecciones extends StatelessWidget {
 }
 
 class _Directorio extends StatelessWidget {
-  _Directorio();
+  final PanelLateralController controller;
 
-  final controller = Get.find<GaleriaController>();
+  const _Directorio(this.controller);
 
   @override
   Widget build(BuildContext context) {
