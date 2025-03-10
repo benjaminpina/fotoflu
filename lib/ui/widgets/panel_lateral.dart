@@ -21,7 +21,7 @@ class PanelLateral extends GetView<PanelLateralController> {
             height: 80,
             child: _Directorio(controller),
           ),
-          Expanded(child: _Selecciones()),
+          Expanded(child: _Grupos(controller)),
           SizedBox(
             width: double.infinity,
             height: 190,
@@ -170,8 +170,9 @@ class _Acciones extends StatelessWidget {
   }
 }
 
-class _Selecciones extends StatelessWidget {
-  const _Selecciones();
+class _Grupos extends StatelessWidget {
+  final PanelLateralController controller;
+  const _Grupos(this.controller);
 
   @override
   Widget build(BuildContext context) {
@@ -199,7 +200,7 @@ class _Selecciones extends StatelessWidget {
                   SizedBox(
                     width: 215,
                     height: double.infinity,
-                    child: DataTableExample(),
+                    child: DataTableGrupos(controller),
                   ),
                   SizedBox(width: 10),
                   SizedBox(
@@ -264,49 +265,45 @@ class _Directorio extends StatelessWidget {
   }
 }
 
-class DataTableExample extends StatefulWidget {
-  const DataTableExample({super.key});
+class DataTableGrupos extends StatelessWidget {
+  final PanelLateralController controller;
 
-  @override
-  State<DataTableExample> createState() => _DataTableExampleState();
-}
-
-class _DataTableExampleState extends State<DataTableExample> {
-  static const int numItems = 20;
-  int? selectedRowIndex;
+  const DataTableGrupos(this.controller, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: DataTable(
-        columns: const <DataColumn>[DataColumn(label: Text('Cambios'))],
-        rows: List<DataRow>.generate(
-          numItems,
-          (int index) => DataRow(
-            color: WidgetStateProperty.resolveWith<Color?>((
-              Set<WidgetState> states,
-            ) {
-              if (states.contains(WidgetState.selected)) {
-                return Theme.of(
-                  context,
-                ).colorScheme.primary.withValues(alpha: 0.08);
-              }
-              if (index.isEven) {
-                return Colors.grey.withValues(alpha: 0.3);
-              }
-              return null; // Use default value for other states and odd rows.
-            }),
-            cells: <DataCell>[DataCell(Text('Row $index'))],
-            selected: selectedRowIndex == index,
-            onSelectChanged: (bool? value) {
-              setState(() {
-                if (value == true) {
-                  selectedRowIndex = index;
-                } else {
-                  selectedRowIndex = null;
+      child: Obx(
+        () => DataTable(
+          columns: const <DataColumn>[DataColumn(label: Text('Cambios'))],
+          rows: List<DataRow>.generate(
+            controller.listaGrupos.length,
+            (int index) => DataRow(
+              color: WidgetStateProperty.resolveWith<Color?>((
+                Set<WidgetState> states,
+              ) {
+                if (states.contains(WidgetState.selected)) {
+                  return Theme.of(
+                    context,
+                  ).colorScheme.primary.withValues(alpha: 0.08);
                 }
-              });
-            },
+                if (index.isEven) {
+                  return Colors.grey.withValues(alpha: 0.3);
+                }
+                return null; // Use default value for other states and odd rows.
+              }),
+              cells: <DataCell>[
+                DataCell(Text(controller.listaGrupos[index].nombre ?? "")),
+              ],
+              selected: controller.selectedRow.value == index,
+              onSelectChanged: (bool? value) {
+                if (value == true) {
+                  controller.selectedRow.value = index;
+                } else {
+                  controller.selectedRow.value = null;
+                }
+              },
+            ),
           ),
         ),
       ),

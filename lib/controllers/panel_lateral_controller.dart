@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fotoflu/models/sesion.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart' as p;
+import 'package:fotoflu/models/grupo.dart';
 import "package:fotoflu/services/files.dart";
 import 'package:fotoflu/controllers/storage_controller.dart';
 import 'package:fotoflu/controllers/galeria_controller.dart';
@@ -23,6 +24,8 @@ class PanelLateralController extends GetxController {
   final counter = ''.obs;
   final archOrigen = ''.obs;
   final archDestino = ''.obs;
+  final listaGrupos = <Grupo>[].obs;
+  final selectedRow = Rxn<int>();
   final title = 'Copiando...'.obs;
   final waiting = false.obs;
 
@@ -30,11 +33,14 @@ class PanelLateralController extends GetxController {
   void onInit() {
     super.onInit();
     dir.value = storage.dir;
+    selectedRow.value = null;
   }
 
   void setDir(String value) {
     dir.value = value;
     storage.dir = value;
+    listaGrupos.clear();
+    galeriaController.setImages([]);
   }
 
   void crearEstructura() async {
@@ -184,11 +190,13 @@ class PanelLateralController extends GetxController {
     // Agreagar un grupo inicial a BD
     await grupos.addGrupo('Cambio 1', sesion);
     final lista = await fotos.getFotosBySesionId(sesion.id);
+    listaGrupos.value = await grupos.getGruposBySesionId(sesion.id);
     galeriaController.setImages(lista);
   }
 
   Future<void> _continuaSesion(Sesion sesion) async {
     final lista = await fotos.getFotosBySesionId(sesion.id);
+    listaGrupos.value = await grupos.getGruposBySesionId(sesion.id);
     galeriaController.setImages(lista);
   }
 
