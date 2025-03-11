@@ -1,6 +1,7 @@
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:fotoflu/controllers/home_controller.dart';
 import 'package:fotoflu/routes/app_routes.dart';
 import 'package:fotoflu/services/application.dart';
 import 'package:get/get.dart';
@@ -174,7 +175,9 @@ class _Acciones extends StatelessWidget {
 
 class _Grupos extends StatelessWidget {
   final PanelLateralController controller;
-  const _Grupos(this.controller);
+  final homeController = Get.find<HomeController>();
+
+  _Grupos(this.controller);
 
   @override
   Widget build(BuildContext context) {
@@ -229,7 +232,9 @@ class _Grupos extends StatelessWidget {
                                         ),
                                       )) {
                                         controller.removeGrupo(
-                                          controller.cambioIdSelected.value!,
+                                          homeController
+                                              .cambioIdSelected
+                                              .value!,
                                         );
                                       }
                                     }
@@ -259,7 +264,9 @@ class _Grupos extends StatelessWidget {
                                       );
                                       if (nombre != null) {
                                         controller.updateGrupo(
-                                          controller.cambioIdSelected.value!,
+                                          homeController
+                                              .cambioIdSelected
+                                              .value!,
                                           nombre,
                                         );
                                       }
@@ -272,13 +279,15 @@ class _Grupos extends StatelessWidget {
                         Obx(
                           () => IconButton(
                             onPressed:
-                                controller.cambioIdSelected.value != null
+                                homeController.cambioIdSelected.value != null
                                     ? () {
                                       if (controller.filtrado.value) {
                                         controller.eliminarFiltro();
                                       } else {
                                         controller.filtrarPorGrupo(
-                                          controller.cambioIdSelected.value!,
+                                          homeController
+                                              .cambioIdSelected
+                                              .value!,
                                         );
                                       }
                                     }
@@ -303,21 +312,28 @@ class _Grupos extends StatelessWidget {
                 Column(
                   children: [
                     Text('Cambios:'),
-                    Obx(() => Text(controller.contCambios.value.toString())),
+                    Obx(
+                      () => Text(homeController.contCambios.value.toString()),
+                    ),
                   ],
                 ),
                 Column(
                   children: [
                     Text('Seleccionadas:'),
                     Obx(
-                      () => Text(controller.contSeleccionadas.value.toString()),
+                      () => Text(
+                        homeController.contSeleccionadas.value.toString(),
+                      ),
                     ),
                   ],
                 ),
                 Column(
                   children: [
                     Text('Para borrar:'),
-                    Obx(() => Text(controller.contParaBorrar.value.toString())),
+                    Obx(
+                      () =>
+                          Text(homeController.contParaBorrar.value.toString()),
+                    ),
                   ],
                 ),
               ],

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fotoflu/models/sesion.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart' as p;
+import 'package:fotoflu/controllers/home_controller.dart';
+import 'package:fotoflu/models/sesion.dart';
 import 'package:fotoflu/models/grupo.dart';
 import "package:fotoflu/services/files.dart";
 import 'package:fotoflu/controllers/storage_controller.dart';
@@ -14,6 +15,7 @@ import 'package:fotoflu/repositories/grupo_repository.dart';
 
 class PanelLateralController extends GetxController {
   final storage = Get.find<StorageController>();
+  final homeController = Get.find<HomeController>();
   final galeriaController = Get.find<GaleriaController>();
   final panelInferiorController = Get.find<PanelInferiorController>();
   final destinos = Get.find<DestinoRepository>();
@@ -27,12 +29,9 @@ class PanelLateralController extends GetxController {
   final archOrigen = ''.obs;
   final archDestino = ''.obs;
   final listaGrupos = <Grupo>[].obs;
-  final cambioIdSelected = Rxn<int>();
+
   final selectedRow = Rxn<int>();
   final title = 'Copiando...'.obs;
-  final contCambios = 0.obs;
-  final contSeleccionadas = 0.obs;
-  final contParaBorrar = 0.obs;
   final filtrado = false.obs;
   final waiting = false.obs;
 
@@ -41,14 +40,14 @@ class PanelLateralController extends GetxController {
     super.onInit();
     dir.value = storage.dir;
     selectedRow.value = null;
-    cambioIdSelected.value = null;
+    homeController.cambioIdSelected.value = null;
 
     // Actualizar id de grupo seleccionado al cambiar la fila seleccionada
     selectedRow.listen((value) {
       if (value != null) {
-        cambioIdSelected.value = listaGrupos[value].id;
+        homeController.cambioIdSelected.value = listaGrupos[value].id;
       } else {
-        cambioIdSelected.value = null;
+        homeController.cambioIdSelected.value = null;
       }
     });
   }
@@ -271,12 +270,13 @@ class PanelLateralController extends GetxController {
   }
 
   void updateStats() {
-    contCambios.value = listaGrupos.length;
-    contSeleccionadas.value =
+    homeController.contCambios.value = listaGrupos.length;
+    homeController.contSeleccionadas.value =
         galeriaController.images
             .where((image) => image.grupo.value != null)
             .length;
-    contParaBorrar.value = 0;
+    homeController.contParaBorrar.value =
+        galeriaController.images.where((image) => image.paraBorrar).length;
   }
 
   String _getDirJpg() {

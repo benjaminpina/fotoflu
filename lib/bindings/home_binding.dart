@@ -11,13 +11,13 @@ import 'package:fotoflu/controllers/panel_lateral_controller.dart';
 class HomeBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => HomeController());
-    Get.lazyPut(() => PanelLateralController());
-    Get.lazyPut(() => PanelInferiorController());
-    Get.lazyPut(() => GaleriaController());
     Get.put(DestinoRepository(), permanent: true);
     Get.put(SesionRepository(), permanent: true);
     Get.put(GrupoRepository(), permanent: true);
     Get.put(FotoRepository(), permanent: true);
+    Get.lazyPut(() => HomeController());
+    Get.lazyPut(() => PanelLateralController());
+    Get.lazyPut(() => PanelInferiorController());
+    Get.lazyPut(() => GaleriaController());
   }
 }

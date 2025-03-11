@@ -1,10 +1,14 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:fotoflu/controllers/home_controller.dart';
+import 'package:fotoflu/repositories/foto_repository.dart';
 import 'package:fotoflu/controllers/galeria_controller.dart';
 
 class PanelInferiorController extends GetxController {
   final galeriaController = Get.find<GaleriaController>();
   final pageController = Get.find<GaleriaController>().pageController;
+  final homeController = Get.find<HomeController>();
+  final fotos = Get.find<FotoRepository>();
 
   final cambioEditing = TextEditingController();
 
@@ -60,5 +64,22 @@ class PanelInferiorController extends GetxController {
   void goToPage(int page) {
     pageController.jumpToPage(page);
     _updatePageInfo();
+  }
+
+  void seleccionar() async {
+    final grupoId = homeController.cambioIdSelected.value;
+    if (grupoId == null) return;
+    final fotoId = galeriaController.images[pageController.page!.toInt()].id;
+    await fotos.updateFotoGrupo(fotoId, grupoId);
+    updateStats();
+  }
+
+  void updateStats() {
+    homeController.contSeleccionadas.value =
+        galeriaController.images
+            .where((image) => image.grupo.value != null)
+            .length;
+    homeController.contParaBorrar.value =
+        galeriaController.images.where((image) => image.paraBorrar).length;
   }
 }

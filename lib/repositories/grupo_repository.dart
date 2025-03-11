@@ -7,6 +7,12 @@ import 'package:fotoflu/models/sesion.dart';
 class GrupoRepository extends GetxController {
   final isar = IsarService().isar;
 
+  Future<Grupo?> getGrupoById(int id) async {
+    final grupo = await isar.grupos.get(id);
+
+    return grupo;
+  }
+
   Future<List<Grupo>> getGruposBySesionId(int sesionId) async {
     final grupos =
         isar.grupos.where().filter().sesion((q) {
