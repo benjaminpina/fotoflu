@@ -300,9 +300,26 @@ class _Grupos extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Column(children: [Text('Cambios:'), Text('0')]),
-                Column(children: [Text('Seleccionadas:'), Text('0')]),
-                Column(children: [Text('Para borrar:'), Text('0')]),
+                Column(
+                  children: [
+                    Text('Cambios:'),
+                    Obx(() => Text(controller.contCambios.value.toString())),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Text('Seleccionadas:'),
+                    Obx(
+                      () => Text(controller.contSeleccionadas.value.toString()),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Text('Para borrar:'),
+                    Obx(() => Text(controller.contParaBorrar.value.toString())),
+                  ],
+                ),
               ],
             ),
           ),

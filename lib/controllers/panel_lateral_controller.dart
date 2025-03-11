@@ -30,6 +30,9 @@ class PanelLateralController extends GetxController {
   final cambioIdSelected = Rxn<int>();
   final selectedRow = Rxn<int>();
   final title = 'Copiando...'.obs;
+  final contCambios = 0.obs;
+  final contSeleccionadas = 0.obs;
+  final contParaBorrar = 0.obs;
   final filtrado = false.obs;
   final waiting = false.obs;
 
@@ -208,6 +211,7 @@ class PanelLateralController extends GetxController {
     galeriaController.setImages(lista);
     selectedRow.value = 0;
     panelInferiorController.goToPage(0);
+    updateStats();
   }
 
   Future<void> _continuaSesion(Sesion sesion) async {
@@ -220,6 +224,7 @@ class PanelLateralController extends GetxController {
       selectedRow.value = null;
     }
     panelInferiorController.goToPage(0);
+    updateStats();
   }
 
   Future<void> filtrarPorGrupo(int id) async {
@@ -245,6 +250,7 @@ class PanelLateralController extends GetxController {
       await grupos.addGrupo(nombre, sesion);
       listaGrupos.value = await grupos.getGruposBySesionId(sesion.id);
     }
+    updateStats();
   }
 
   void updateGrupo(int id, String nombre) async {
@@ -261,6 +267,16 @@ class PanelLateralController extends GetxController {
       await grupos.deleteGrupo(id);
       listaGrupos.value = await grupos.getGruposBySesionId(sesion.id);
     }
+    updateStats();
+  }
+
+  void updateStats() {
+    contCambios.value = listaGrupos.length;
+    contSeleccionadas.value =
+        galeriaController.images
+            .where((image) => image.grupo.value != null)
+            .length;
+    contParaBorrar.value = 0;
   }
 
   String _getDirJpg() {
