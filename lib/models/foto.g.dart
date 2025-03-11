@@ -21,6 +21,11 @@ const FotoSchema = CollectionSchema(
       id: 0,
       name: r'nombre',
       type: IsarType.string,
+    ),
+    r'paraBorrar': PropertySchema(
+      id: 1,
+      name: r'paraBorrar',
+      type: IsarType.bool,
     )
   },
   estimateSize: _fotoEstimateSize,
@@ -72,6 +77,7 @@ void _fotoSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.nombre);
+  writer.writeBool(offsets[1], object.paraBorrar);
 }
 
 Foto _fotoDeserialize(
@@ -83,6 +89,7 @@ Foto _fotoDeserialize(
   final object = Foto();
   object.id = id;
   object.nombre = reader.readStringOrNull(offsets[0]);
+  object.paraBorrar = reader.readBool(offsets[1]);
   return object;
 }
 
@@ -95,6 +102,8 @@ P _fotoDeserializeProp<P>(
   switch (propertyId) {
     case 0:
       return (reader.readStringOrNull(offset)) as P;
+    case 1:
+      return (reader.readBool(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -385,6 +394,16 @@ extension FotoQueryFilter on QueryBuilder<Foto, Foto, QFilterCondition> {
       ));
     });
   }
+
+  QueryBuilder<Foto, Foto, QAfterFilterCondition> paraBorrarEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'paraBorrar',
+        value: value,
+      ));
+    });
+  }
 }
 
 extension FotoQueryObject on QueryBuilder<Foto, Foto, QFilterCondition> {}
@@ -428,6 +447,18 @@ extension FotoQuerySortBy on QueryBuilder<Foto, Foto, QSortBy> {
       return query.addSortBy(r'nombre', Sort.desc);
     });
   }
+
+  QueryBuilder<Foto, Foto, QAfterSortBy> sortByParaBorrar() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'paraBorrar', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Foto, Foto, QAfterSortBy> sortByParaBorrarDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'paraBorrar', Sort.desc);
+    });
+  }
 }
 
 extension FotoQuerySortThenBy on QueryBuilder<Foto, Foto, QSortThenBy> {
@@ -454,6 +485,18 @@ extension FotoQuerySortThenBy on QueryBuilder<Foto, Foto, QSortThenBy> {
       return query.addSortBy(r'nombre', Sort.desc);
     });
   }
+
+  QueryBuilder<Foto, Foto, QAfterSortBy> thenByParaBorrar() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'paraBorrar', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Foto, Foto, QAfterSortBy> thenByParaBorrarDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'paraBorrar', Sort.desc);
+    });
+  }
 }
 
 extension FotoQueryWhereDistinct on QueryBuilder<Foto, Foto, QDistinct> {
@@ -461,6 +504,12 @@ extension FotoQueryWhereDistinct on QueryBuilder<Foto, Foto, QDistinct> {
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'nombre', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Foto, Foto, QDistinct> distinctByParaBorrar() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'paraBorrar');
     });
   }
 }
@@ -475,6 +524,12 @@ extension FotoQueryProperty on QueryBuilder<Foto, Foto, QQueryProperty> {
   QueryBuilder<Foto, String?, QQueryOperations> nombreProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'nombre');
+    });
+  }
+
+  QueryBuilder<Foto, bool, QQueryOperations> paraBorrarProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'paraBorrar');
     });
   }
 }

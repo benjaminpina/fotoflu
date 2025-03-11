@@ -9,6 +9,7 @@ class Foto {
   Id id = Isar.autoIncrement;
 
   String? nombre;
+  bool paraBorrar = false;
 
   final sesion = IsarLink<Sesion>();
   final grupo = IsarLink<Grupo>();
