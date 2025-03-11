@@ -211,6 +211,11 @@ class PanelLateralController extends GetxController {
     selectedRow.value = 0;
     panelInferiorController.goToPage(0);
     updateStats();
+    if (lista.isNotEmpty) {
+      homeController.setAppState(AppState.explorando);
+    } else {
+      homeController.setAppState(AppState.sinImagenes);
+    }
   }
 
   Future<void> _continuaSesion(Sesion sesion) async {
@@ -224,6 +229,11 @@ class PanelLateralController extends GetxController {
     }
     panelInferiorController.goToPage(0);
     updateStats();
+    if (lista.isNotEmpty) {
+      homeController.setAppState(AppState.explorando);
+    } else {
+      homeController.setAppState(AppState.sinImagenes);
+    }
   }
 
   Future<void> filtrarPorGrupo(int id) async {
@@ -231,6 +241,11 @@ class PanelLateralController extends GetxController {
     final lista = await fotos.getFotosByGrupoId(id);
     galeriaController.setImages(lista);
     panelInferiorController.goToPage(0);
+    if (lista.isNotEmpty) {
+      homeController.setAppState(AppState.explorando);
+    } else {
+      homeController.setAppState(AppState.sinImagenes);
+    }
   }
 
   Future<void> eliminarFiltro() async {
@@ -240,6 +255,11 @@ class PanelLateralController extends GetxController {
       final lista = await fotos.getFotosBySesionId(sesion.id);
       galeriaController.setImages(lista);
       panelInferiorController.goToPage(0);
+      if (lista.isNotEmpty) {
+        homeController.setAppState(AppState.explorando);
+      } else {
+        homeController.setAppState(AppState.sinImagenes);
+      }
     }
   }
 

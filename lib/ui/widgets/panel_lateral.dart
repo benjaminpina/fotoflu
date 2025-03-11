@@ -84,9 +84,10 @@ class _Botones extends StatelessWidget {
 }
 
 class _Acciones extends StatelessWidget {
+  final homeController = Get.find<HomeController>();
   final PanelLateralController controller;
 
-  const _Acciones(this.controller);
+  _Acciones(this.controller);
 
   @override
   Widget build(BuildContext context) {
@@ -161,10 +162,15 @@ class _Acciones extends StatelessWidget {
             ),
           ),
           SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () {},
-            child: Row(
-              children: [Icon(Icons.raw_on), Text('Exportar raw selectos')],
+          Obx(
+            () => ElevatedButton(
+              onPressed:
+                  homeController.appState.value != AppState.inicial
+                      ? () {}
+                      : null,
+              child: Row(
+                children: [Icon(Icons.raw_on), Text('Exportar raw selectos')],
+              ),
             ),
           ),
         ],
@@ -203,21 +209,26 @@ class _Grupos extends StatelessWidget {
                     height: double.infinity,
                     child: Column(
                       children: [
-                        IconButton(
-                          onPressed: () async {
-                            final cambio = await prompt(
-                              context,
-                              title: Text('Agregar Cambio'),
-                              hintText: 'Cambio',
-                              textOK: Text('Agregar'),
-                              textCancel: Text('Cancelar'),
-                              controller: TextEditingController(),
-                            );
-                            if (cambio != null) {
-                              controller.addGrupo(cambio);
-                            }
-                          },
-                          icon: Icon(Icons.add),
+                        Obx(
+                          () => IconButton(
+                            onPressed:
+                                homeController.appState != AppState.inicial
+                                    ? () async {
+                                      final cambio = await prompt(
+                                        context,
+                                        title: Text('Agregar Cambio'),
+                                        hintText: 'Cambio',
+                                        textOK: Text('Agregar'),
+                                        textCancel: Text('Cancelar'),
+                                        controller: TextEditingController(),
+                                      );
+                                      if (cambio != null) {
+                                        controller.addGrupo(cambio);
+                                      }
+                                    }
+                                    : null,
+                            icon: Icon(Icons.add),
+                          ),
                         ),
                         Obx(
                           () => IconButton(

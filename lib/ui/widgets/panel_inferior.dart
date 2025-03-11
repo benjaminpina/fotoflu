@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fotoflu/controllers/home_controller.dart';
 import 'package:get/get.dart';
 import 'package:fotoflu/controllers/panel_inferior_controller.dart';
 
@@ -21,9 +22,10 @@ class PanelInferior extends GetView<PanelInferiorController> {
 }
 
 class _ControlesNavegacion extends StatelessWidget {
+  final homeController = Get.find<HomeController>();
   final PanelInferiorController controller;
 
-  const _ControlesNavegacion(this.controller);
+  _ControlesNavegacion(this.controller);
 
   @override
   Widget build(BuildContext context) {
@@ -31,17 +33,51 @@ class _ControlesNavegacion extends StatelessWidget {
       width: double.infinity,
       child: Row(
         children: [
-          IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => controller.previousPage(),
+          Obx(
+            () => IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed:
+                  homeController.appState.value == AppState.explorando
+                      ? () => controller.previousPage()
+                      : null,
+            ),
           ),
-          IconButton(
-            icon: const Icon(Icons.arrow_forward),
-            onPressed: () => controller.nextPage(),
+          Obx(
+            () => IconButton(
+              icon: const Icon(Icons.arrow_forward),
+              onPressed:
+                  homeController.appState.value == AppState.explorando
+                      ? () => controller.nextPage()
+                      : null,
+            ),
           ),
-          IconButton(icon: const Icon(Icons.check), onPressed: () {}),
-          IconButton(icon: const Icon(Icons.close), onPressed: () {}),
-          IconButton(icon: const Icon(Icons.delete), onPressed: () {}),
+          Obx(
+            () => IconButton(
+              icon: const Icon(Icons.check),
+              onPressed:
+                  homeController.appState.value == AppState.explorando
+                      ? () {}
+                      : null,
+            ),
+          ),
+          Obx(
+            () => IconButton(
+              icon: const Icon(Icons.close),
+              onPressed:
+                  homeController.appState.value == AppState.explorando
+                      ? () {}
+                      : null,
+            ),
+          ),
+          Obx(
+            () => IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed:
+                  homeController.appState.value == AppState.explorando
+                      ? () {}
+                      : null,
+            ),
+          ),
           SizedBox(width: 20),
           SizedBox(
             height: 30,
@@ -71,9 +107,11 @@ class _ControlesNavegacion extends StatelessWidget {
 }
 
 class _BarraNavegacion extends StatelessWidget {
+  final homeController = Get.find<HomeController>();
   final PanelInferiorController controller;
 
-  const _BarraNavegacion(this.controller);
+  _BarraNavegacion(this.controller);
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
