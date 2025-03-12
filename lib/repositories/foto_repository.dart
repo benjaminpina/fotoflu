@@ -67,4 +67,18 @@ class FotoRepository extends GetxController {
       }
     });
   }
+
+  Future<void> unselectFoto(int id) async {
+    await isar.writeTxn(() async {
+      final foto = await isar.fotos.get(id);
+
+      if (foto != null) {
+        foto.grupo.value = null;
+        await isar.fotos.put(foto);
+        await foto.grupo.save();
+      } else {
+        return;
+      }
+    });
+  }
 }

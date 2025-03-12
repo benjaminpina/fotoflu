@@ -66,7 +66,7 @@ class _ControlesNavegacion extends StatelessWidget {
               icon: const Icon(Icons.close),
               onPressed:
                   homeController.appState.value == AppState.explorando
-                      ? () {}
+                      ? () => controller.desSeleccionar()
                       : null,
             ),
           ),

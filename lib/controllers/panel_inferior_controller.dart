@@ -82,6 +82,16 @@ class PanelInferiorController extends GetxController {
     updateStats();
   }
 
+  void desSeleccionar() async {
+    final foto = galeriaController.images[pageController.page!.toInt()];
+    // actualizar foto en BD
+    await fotos.unselectFoto(foto.id);
+    // actualizar foto en memoria
+    foto.grupo.value = null;
+    cambioEditing.text = '';
+    updateStats();
+  }
+
   void updateStats() {
     homeController.contSeleccionadas.value =
         galeriaController.images
