@@ -212,7 +212,8 @@ class _Grupos extends StatelessWidget {
                         Obx(
                           () => IconButton(
                             onPressed:
-                                homeController.appState != AppState.inicial
+                                homeController.appState.value !=
+                                        AppState.inicial
                                     ? () async {
                                       final cambio = await prompt(
                                         context,

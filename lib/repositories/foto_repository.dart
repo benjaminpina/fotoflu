@@ -95,4 +95,18 @@ class FotoRepository extends GetxController {
       }
     });
   }
+
+  Future<List<Foto>> getFotosParaBorrar() async {
+    final fotos =
+        await isar.fotos.where().filter().paraBorrarEqualTo(true).findAll();
+
+    return fotos;
+  }
+
+  Future<List<Foto>> getFotosSeleccionadadas() async {
+    final fotos =
+        await isar.fotos.where().filter().not().grupoIsNull().findAll();
+
+    return fotos;
+  }
 }

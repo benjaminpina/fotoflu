@@ -76,3 +76,14 @@ Future<bool> directoryExists(String path) async {
   final dir = Directory(path);
   return await dir.exists();
 }
+
+Future<void> deleteFile(String path) async {
+  final file = File(path);
+  try {
+    await file.delete();
+  } catch (e) {
+    if (kDebugMode) {
+      print('Error al eliminar el archivo: $e');
+    }
+  }
+}

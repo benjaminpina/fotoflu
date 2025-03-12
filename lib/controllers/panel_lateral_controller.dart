@@ -93,7 +93,7 @@ class PanelLateralController extends GetxController {
     final filesRawDest =
         filesRaw.map((f) => '$dirRaw/${p.basename(f)}').toList();
 
-    title.value = 'Copiando archivos JPG...';
+    title.value = 'Moviendo archivos JPG...';
     progress.value = 0.0;
     for (var i = 0; i < filesJpg.length; i++) {
       final file = filesJpg[i];
@@ -101,11 +101,11 @@ class PanelLateralController extends GetxController {
       archOrigen.value = file;
       archDestino.value = dest;
       await copyFile(file, dest, preserveOriginal: false);
-      counter.value = 'Copiando archivo ${i + 1} de ${filesJpg.length}';
+      counter.value = 'Moviendo archivo ${i + 1} de ${filesJpg.length}';
       progress.value = (i + 1) / filesJpg.length;
     }
 
-    title.value = 'Copiando archivos RAW...';
+    title.value = 'Moviendo archivos RAW...';
     progress.value = 0.0;
     for (var i = 0; i < filesRaw.length; i++) {
       final file = filesRaw[i];
@@ -113,7 +113,7 @@ class PanelLateralController extends GetxController {
       archOrigen.value = file;
       archDestino.value = dest;
       await copyFile(file, dest, preserveOriginal: false);
-      counter.value = 'Copiando archivo ${i + 1} de ${filesRaw.length}';
+      counter.value = 'Moviendo archivo ${i + 1} de ${filesRaw.length}';
       progress.value = (i + 1) / filesRaw.length;
     }
 
@@ -299,11 +299,72 @@ class PanelLateralController extends GetxController {
         galeriaController.images.where((image) => image.paraBorrar).length;
   }
 
+  Future<void> exportarRawSelectos(BuildContext context) async {
+    final extRaw = storage.extRaw;
+    final dirRaw = _getDirRaw();
+    final dirSelectos = _getDirSelectos();
+
+    // Obtener lista de fotos marcadas para borrado
+    final fotosParaBorrar = await fotos.getFotosParaBorrar();
+    // Generar lista de archivos JPG a borrar
+    final archivosBorrar = fotosParaBorrar.map((f) => f.nombre).toList();
+    // Agregar lista de archivos RAW a borrar
+    final archivosRawBorrar =
+        archivosBorrar
+            .map((f) => '$dirRaw/${p.basenameWithoutExtension(f!)}.$extRaw')
+            .toList();
+    archivosBorrar.addAll(archivosRawBorrar);
+
+    title.value = "Eliminando fotos marcadas para borrar...";
+    progress.value = 0.0;
+    for (var i = 0; i < archivosBorrar.length; i++) {
+      final file = archivosBorrar[i];
+      await deleteFile(file!);
+      counter.value = 'Eliminando archivo ${i + 1} de ${archivosBorrar.length}';
+      progress.value = (i + 1) / archivosBorrar.length;
+    }
+
+    // Obtener lista de fotos seleccionadas
+    final fotosSelectas = await fotos.getFotosSeleccionadadas();
+    // Generar lista de archivos RAW seleccionados
+    final archivosRawSelectos =
+        fotosSelectas
+            .map((f) => '$dirRaw/${p.basename(f.nombre!)}.$extRaw')
+            .toList();
+
+    title.value = 'Copiando archivos RAW seleccionados...';
+    progress.value = 0.0;
+    for (var i = 0; i < archivosRawSelectos.length; i++) {
+      final file = archivosRawSelectos[i];
+      final dest = '$dirSelectos/${p.basename(file)}';
+      archOrigen.value = file;
+      archDestino.value = dest;
+      await copyFile(file, dest, preserveOriginal: true);
+      counter.value =
+          'Copiando archivo ${i + 1} de ${archivosRawSelectos.length}';
+      progress.value = (i + 1) / archivosRawSelectos.length;
+    }
+
+    // Cerrar el diálogo que muestra el progreso
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
+
+    archDestino.value = '';
+    archOrigen.value = '';
+    title.value = '';
+    progress.value = 0.0;
+  }
+
   String _getDirJpg() {
     return '${storage.dir}/${destinos.destinos.firstWhereOrNull((d) => d.id == storage.destJpg)?.nombre ?? ''}';
   }
 
   String _getDirRaw() {
     return '${storage.dir}/${destinos.destinos.firstWhereOrNull((d) => d.id == storage.destRaw)?.nombre ?? ''}';
+  }
+
+  String _getDirSelectos() {
+    return '${storage.dir}/${destinos.destinos.firstWhereOrNull((d) => d.id == storage.destSelect)?.nombre ?? ''}';
   }
 }
