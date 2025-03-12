@@ -54,17 +54,14 @@ class FotoRepository extends GetxController {
     });
   }
 
-  Future<void> updateFotoGrupo(int id, int grupoId) async {
+  Future<void> updateFotoGrupo(int id, Grupo grupo) async {
     await isar.writeTxn(() async {
       final foto = await isar.fotos.get(id);
 
       if (foto != null) {
-        final grupo = await isar.grupos.get(grupoId);
-        if (grupo != null) {
-          foto.grupo.value = grupo;
-          await isar.fotos.put(foto);
-          await foto.grupo.save();
-        }
+        foto.grupo.value = grupo;
+        await isar.fotos.put(foto);
+        await foto.grupo.save();
       } else {
         return;
       }

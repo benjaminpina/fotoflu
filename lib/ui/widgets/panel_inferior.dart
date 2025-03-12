@@ -55,8 +55,9 @@ class _ControlesNavegacion extends StatelessWidget {
             () => IconButton(
               icon: const Icon(Icons.check),
               onPressed:
-                  homeController.appState.value == AppState.explorando
-                      ? () {}
+                  homeController.appState.value == AppState.explorando &&
+                          homeController.cambioIdSelected.value != null
+                      ? () => controller.seleccionar()
                       : null,
             ),
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:fotoflu/repositories/grupo_repository.dart';
 import 'package:fotoflu/controllers/home_controller.dart';
 import 'package:fotoflu/repositories/foto_repository.dart';
 import 'package:fotoflu/controllers/galeria_controller.dart';
@@ -9,6 +10,7 @@ class PanelInferiorController extends GetxController {
   final pageController = Get.find<GaleriaController>().pageController;
   final homeController = Get.find<HomeController>();
   final fotos = Get.find<FotoRepository>();
+  final grupos = Get.find<GrupoRepository>();
 
   final cambioEditing = TextEditingController();
 
@@ -69,8 +71,14 @@ class PanelInferiorController extends GetxController {
   void seleccionar() async {
     final grupoId = homeController.cambioIdSelected.value;
     if (grupoId == null) return;
-    final fotoId = galeriaController.images[pageController.page!.toInt()].id;
-    await fotos.updateFotoGrupo(fotoId, grupoId);
+    final grupo = await grupos.getGrupoById(grupoId);
+    if (grupo == null) return;
+    final foto = galeriaController.images[pageController.page!.toInt()];
+    // actualizar foto en BD
+    await fotos.updateFotoGrupo(foto.id, grupo);
+    // actualizar foto en memoria
+    foto.grupo.value = grupo;
+    cambioEditing.text = grupo.nombre ?? '';
     updateStats();
   }
 
