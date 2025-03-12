@@ -81,4 +81,18 @@ class FotoRepository extends GetxController {
       }
     });
   }
+
+  Future<void> paraBorrarFoto(int id) async {
+    // marcar/desmarcar foto para ser borrada
+    await isar.writeTxn(() async {
+      final foto = await isar.fotos.get(id);
+
+      if (foto != null) {
+        foto.paraBorrar = !foto.paraBorrar;
+        await isar.fotos.put(foto);
+      } else {
+        return;
+      }
+    });
+  }
 }

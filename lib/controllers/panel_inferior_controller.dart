@@ -30,15 +30,10 @@ class PanelInferiorController extends GetxController {
     maxImages.value = galeriaController.maxImages.value;
     currentPage.value = pageController.page!;
     try {
-      nombreArchivo.value =
-          galeriaController.images[pageController.page!.toInt()].nombre ?? '';
+      final foto = galeriaController.images[pageController.page!.toInt()];
+      nombreArchivo.value = foto.nombre ?? '';
       cambioEditing.text =
-          galeriaController
-              .images[pageController.page!.toInt()]
-              .grupo
-              .value
-              ?.nombre ??
-          '';
+          foto.paraBorrar ? 'Para borrar' : foto.grupo.value?.nombre ?? '';
     } catch (e) {
       nombreArchivo.value = '';
       cambioEditing.text = '';
@@ -74,6 +69,7 @@ class PanelInferiorController extends GetxController {
     final grupo = await grupos.getGrupoById(grupoId);
     if (grupo == null) return;
     final foto = galeriaController.images[pageController.page!.toInt()];
+    if (foto.paraBorrar) await paraBorrar(); // si estaba para borrar, desmarcar
     // actualizar foto en BD
     await fotos.updateFotoGrupo(foto.id, grupo);
     // actualizar foto en memoria
@@ -82,13 +78,24 @@ class PanelInferiorController extends GetxController {
     updateStats();
   }
 
-  void desSeleccionar() async {
+  Future<void> desSeleccionar() async {
     final foto = galeriaController.images[pageController.page!.toInt()];
     // actualizar foto en BD
     await fotos.unselectFoto(foto.id);
     // actualizar foto en memoria
     foto.grupo.value = null;
     cambioEditing.text = '';
+    updateStats();
+  }
+
+  Future<void> paraBorrar() async {
+    final foto = galeriaController.images[pageController.page!.toInt()];
+    await fotos.paraBorrarFoto(foto.id);
+    foto.paraBorrar = !foto.paraBorrar;
+    await desSeleccionar();
+    if (foto.paraBorrar) {
+      cambioEditing.text = 'Para borrar';
+    }
     updateStats();
   }
 

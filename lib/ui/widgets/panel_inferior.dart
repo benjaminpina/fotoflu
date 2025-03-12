@@ -75,7 +75,7 @@ class _ControlesNavegacion extends StatelessWidget {
               icon: const Icon(Icons.delete),
               onPressed:
                   homeController.appState.value == AppState.explorando
-                      ? () {}
+                      ? () => controller.paraBorrar()
                       : null,
             ),
           ),
