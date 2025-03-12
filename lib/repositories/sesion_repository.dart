@@ -8,6 +8,11 @@ import 'package:fotoflu/models/foto.dart';
 class SesionRepository extends GetxController {
   final isar = IsarService().isar;
 
+  Future<List<Sesion>> getSesiones() async {
+    final sesiones = await isar.sesions.where().findAll();
+    return sesiones;
+  }
+
   Future<Sesion> addSesion(String carpeta) async {
     final sesionPrevia =
         await isar.sesions.filter().carpetaEqualTo(carpeta).findFirst();
