@@ -80,13 +80,15 @@ class _ControlesNavegacion extends StatelessWidget {
             ),
           ),
           SizedBox(width: 20),
-          SizedBox(
-            height: 30,
+          Container(
+            height: 50,
             width: 200,
+            padding: const EdgeInsets.symmetric(vertical: 2),
             child: TextField(
               readOnly: true,
               controller: controller.cambioEditing,
               decoration: InputDecoration(border: OutlineInputBorder()),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
           ),
           SizedBox(width: 20),
