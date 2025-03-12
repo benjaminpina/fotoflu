@@ -96,17 +96,33 @@ class FotoRepository extends GetxController {
     });
   }
 
-  Future<List<Foto>> getFotosParaBorrar() async {
+  Future<List<Foto>> getFotosParaBorrar(int sesionId) async {
     final fotos =
-        await isar.fotos.where().filter().paraBorrarEqualTo(true).findAll();
+        await isar.fotos.where().filter().paraBorrarEqualTo(true).and().sesion((
+          q,
+        ) {
+          return q.idEqualTo(sesionId);
+        }).findAll();
 
     return fotos;
   }
 
-  Future<List<Foto>> getFotosSeleccionadadas() async {
+  Future<List<Foto>> getFotosSeleccionadadas(int sesionId) async {
     final fotos =
-        await isar.fotos.where().filter().not().grupoIsNull().findAll();
+        await isar.fotos.where().filter().not().grupoIsNull().and().sesion((q) {
+          return q.idEqualTo(sesionId);
+        }).findAll();
 
     return fotos;
+  }
+
+  Future<void> borrarFotos(int sesionId) async {
+    await isar.writeTxn(() async {
+      await isar.fotos.where().filter().paraBorrarEqualTo(true).and().sesion((
+        q,
+      ) {
+        return q.idEqualTo(sesionId);
+      }).deleteAll();
+    });
   }
 }

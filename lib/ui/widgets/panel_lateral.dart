@@ -166,7 +166,46 @@ class _Acciones extends StatelessWidget {
             () => ElevatedButton(
               onPressed:
                   homeController.appState.value != AppState.inicial
-                      ? () {}
+                      ? () {
+                        controller.exportarRawSelectos(context);
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Obx(() => Text(controller.title.value)),
+                              content: SizedBox(
+                                height: 100,
+                                width: width * 0.5,
+                                child: Column(
+                                  children: [
+                                    Obx(
+                                      () => Column(
+                                        children: [
+                                          LinearPercentIndicator(
+                                            percent: controller.progress.value,
+                                            lineHeight: 20,
+                                            center: Text(
+                                              "${(controller.progress.value * 100).toStringAsFixed(1)}%",
+                                            ),
+                                            progressColor: Colors.black,
+                                          ),
+                                          SizedBox(height: 10),
+                                          Text(controller.counter.value),
+                                          SizedBox(height: 5),
+                                          Text(controller.archOrigen.value),
+                                          SizedBox(height: 5),
+                                          Text(controller.archDestino.value),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      }
                       : null,
               child: Row(
                 children: [Icon(Icons.raw_on), Text('Exportar raw selectos')],

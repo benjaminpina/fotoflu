@@ -24,6 +24,7 @@ class PanelLateralController extends GetxController {
   final fotos = Get.find<FotoRepository>();
 
   final dir = ''.obs;
+  final sesionId = 0.obs;
   final progress = 0.0.obs;
   final counter = ''.obs;
   final archOrigen = ''.obs;
@@ -143,7 +144,8 @@ class PanelLateralController extends GetxController {
     // ¿Ya se ha explorado este directorio?
     final sesion = await sesiones.getSesionByCarpeta(dir.value);
     if (sesion != null) {
-      await _continuaSesion(sesion);
+      sesionId.value = sesion.id;
+      await _continuaSeleccion(sesion);
       waiting.value = false;
       return;
     }
@@ -199,6 +201,7 @@ class PanelLateralController extends GetxController {
 
     // Agregar sesión a BD
     final sesion = await sesiones.addSesion(dir.value);
+    sesionId.value = sesion.id;
     // Agregar fotos a BD
     for (final jpg in seleccionables) {
       fotos.addFoto(jpg, sesion);
@@ -218,7 +221,7 @@ class PanelLateralController extends GetxController {
     }
   }
 
-  Future<void> _continuaSesion(Sesion sesion) async {
+  Future<void> _continuaSeleccion(Sesion sesion) async {
     final lista = await fotos.getFotosBySesionId(sesion.id);
     listaGrupos.value = await grupos.getGruposBySesionId(sesion.id);
     galeriaController.setImages(lista);
@@ -305,7 +308,7 @@ class PanelLateralController extends GetxController {
     final dirSelectos = _getDirSelectos();
 
     // Obtener lista de fotos marcadas para borrado
-    final fotosParaBorrar = await fotos.getFotosParaBorrar();
+    final fotosParaBorrar = await fotos.getFotosParaBorrar(sesionId.value);
     // Generar lista de archivos JPG a borrar
     final archivosBorrar = fotosParaBorrar.map((f) => f.nombre).toList();
     // Agregar lista de archivos RAW a borrar
@@ -315,6 +318,10 @@ class PanelLateralController extends GetxController {
             .toList();
     archivosBorrar.addAll(archivosRawBorrar);
 
+    // eliminar fotos de la base de datos
+    await fotos.borrarFotos(sesionId.value);
+
+    // eliminar archivos marcados para borrar
     title.value = "Eliminando fotos marcadas para borrar...";
     progress.value = 0.0;
     for (var i = 0; i < archivosBorrar.length; i++) {
@@ -325,11 +332,13 @@ class PanelLateralController extends GetxController {
     }
 
     // Obtener lista de fotos seleccionadas
-    final fotosSelectas = await fotos.getFotosSeleccionadadas();
+    final fotosSelectas = await fotos.getFotosSeleccionadadas(sesionId.value);
     // Generar lista de archivos RAW seleccionados
     final archivosRawSelectos =
         fotosSelectas
-            .map((f) => '$dirRaw/${p.basename(f.nombre!)}.$extRaw')
+            .map(
+              (f) => '$dirRaw/${p.basenameWithoutExtension(f.nombre!)}.$extRaw',
+            )
             .toList();
 
     title.value = 'Copiando archivos RAW seleccionados...';
@@ -350,10 +359,21 @@ class PanelLateralController extends GetxController {
       Navigator.of(context).pop();
     }
 
+    Get.snackbar(
+      'Finalizado',
+      'Los archivos RAW seleccionados han sido copiados',
+    );
+
     archDestino.value = '';
     archOrigen.value = '';
     title.value = '';
     progress.value = 0.0;
+
+    // Reiniciar selección
+    final sesion = await sesiones.getSesionByCarpeta(dir.value);
+    if (sesion != null) {
+      _continuaSeleccion(sesion);
+    }
   }
 
   String _getDirJpg() {

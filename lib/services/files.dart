@@ -50,6 +50,8 @@ Future<String?> copyFile(
 Future<List<String>> filesByExt(String parentDir, List<String> exts) async {
   final dir = Directory(parentDir);
   List<String> fileList = [];
+  // Pasar lista de extensiones a minúsculas
+  exts = exts.map((ext) => ext.toLowerCase()).toList();
 
   try {
     final files = dir.listSync().whereType<File>().toList();
