@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:fotoflu/ui/theme/util.dart';
+import 'package:fotoflu/ui/theme/theme.dart';
 import 'package:fotoflu/routes/app_routes.dart';
 import 'package:fotoflu/routes/app_pages.dart';
 import 'package:fotoflu/db/isar_service.dart';
@@ -19,13 +21,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final brightness = View.of(context).platformDispatcher.platformBrightness;
+    TextTheme textTheme = createTextTheme(context, "ABeeZee", "ABeeZee");
+    MaterialTheme theme = MaterialTheme(textTheme);
     return GetMaterialApp(
       title: 'Flutter Demo',
       navigatorKey: Get.key,
       getPages: AppPages.pages,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
+      theme: brightness == Brightness.light ? theme.light() : theme.dark(),
       initialRoute: AppRoutes.home,
     );
   }
