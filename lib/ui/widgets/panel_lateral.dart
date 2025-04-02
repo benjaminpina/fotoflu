@@ -422,8 +422,9 @@ class _Directorio extends StatelessWidget {
 
 class DataTableGrupos extends StatelessWidget {
   final PanelLateralController controller;
+  final homeController = Get.find<HomeController>();
 
-  const DataTableGrupos(this.controller, {super.key});
+  DataTableGrupos(this.controller, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -452,7 +453,14 @@ class DataTableGrupos extends StatelessWidget {
               }),
               cells: <DataCell>[
                 DataCell(Text(controller.listaGrupos[index].nombre ?? "")),
-                DataCell(Text(controller.listaGrupos[index].id.toString())),
+                DataCell(
+                  Text(
+                    homeController
+                            .contSelPorGrupo[controller.listaGrupos[index].id]
+                            ?.toString() ??
+                        "0",
+                  ),
+                ),
               ],
               selected: controller.selectedRow.value == index,
               onSelectChanged: (bool? value) {
