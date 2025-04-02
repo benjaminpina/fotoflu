@@ -301,6 +301,14 @@ class PanelLateralController extends GetxController {
             .length;
     homeController.contParaBorrar.value =
         galeriaController.images.where((image) => image.paraBorrar).length;
+    final conteos = <int, int>{};
+    for (final image in galeriaController.images) {
+      if (image.grupo.value != null) {
+        conteos[image.grupo.value!.id] =
+            (conteos[image.grupo.value!.id] ?? 0) + 1;
+      }
+    }
+    homeController.contSelPorGrupo.value = conteos;
   }
 
   Future<void> exportarRawSelectos(BuildContext context) async {
