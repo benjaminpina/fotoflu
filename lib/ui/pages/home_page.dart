@@ -38,7 +38,7 @@ class HomePage extends GetView<HomeController> {
               ],
             ),
           ),
-          SizedBox(width: 300, height: double.infinity, child: PanelLateral()),
+          SizedBox(width: 350, height: double.infinity, child: PanelLateral()),
         ],
       ),
     );

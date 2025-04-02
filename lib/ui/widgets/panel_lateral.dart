@@ -238,7 +238,7 @@ class _Grupos extends StatelessWidget {
               child: Row(
                 children: [
                   SizedBox(
-                    width: 215,
+                    width: 260,
                     height: double.infinity,
                     child: DataTableGrupos(controller),
                   ),
@@ -430,7 +430,10 @@ class DataTableGrupos extends StatelessWidget {
     return SingleChildScrollView(
       child: Obx(
         () => DataTable(
-          columns: const <DataColumn>[DataColumn(label: Text('Cambios'))],
+          columns: const <DataColumn>[
+            DataColumn(label: Text('Cambios')),
+            DataColumn(label: Text('Cont.')),
+          ],
           rows: List<DataRow>.generate(
             controller.listaGrupos.length,
             (int index) => DataRow(
@@ -449,6 +452,7 @@ class DataTableGrupos extends StatelessWidget {
               }),
               cells: <DataCell>[
                 DataCell(Text(controller.listaGrupos[index].nombre ?? "")),
+                DataCell(Text(controller.listaGrupos[index].id.toString())),
               ],
               selected: controller.selectedRow.value == index,
               onSelectChanged: (bool? value) {
