@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
     TextTheme textTheme = createTextTheme(context, "ABeeZee", "ABeeZee");
     MaterialTheme theme = MaterialTheme(textTheme);
     return GetMaterialApp(
-      title: 'Flutter Demo',
+      title: 'FotoFlu',
       navigatorKey: Get.key,
       getPages: AppPages.pages,
       theme: brightness == Brightness.light ? theme.light() : theme.dark(),
