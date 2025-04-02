@@ -271,6 +271,7 @@ class PanelLateralController extends GetxController {
     if (sesion != null) {
       await grupos.addGrupo(nombre, sesion);
       listaGrupos.value = await grupos.getGruposBySesionId(sesion.id);
+      selectedRow.value = listaGrupos.length - 1;
     }
     updateStats();
   }
